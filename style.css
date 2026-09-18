@@ -135,8 +135,8 @@
 
     /* ---------- Glass ---------- */
 
-    --glass:
-        rgba(28, 31, 55, 0.86);
+    --glass: rgba(255,255,255,.07)
+        ;
 
     --glass-light:
         rgba(255, 255, 255, 0.075);
@@ -1206,7 +1206,37 @@ textarea {
 .lesson-card:nth-child(6n):hover {
     background: rgba(152,119,232,.08);
 }
+/* ---------- Status & Favorite Colors ---------- */
 
+.lesson-card:nth-child(6n + 1) .lesson-status,
+.lesson-card:nth-child(6n + 1) .lesson-favorite {
+  color: #4298e8;
+}
+
+.lesson-card:nth-child(6n + 2) .lesson-status,
+.lesson-card:nth-child(6n + 2) .lesson-favorite {
+  color: #3eb27d;
+}
+
+.lesson-card:nth-child(6n + 3) .lesson-status,
+.lesson-card:nth-child(6n + 3) .lesson-favorite {
+  color: #dba72d;
+}
+
+.lesson-card:nth-child(6n + 4) .lesson-status,
+.lesson-card:nth-child(6n + 4) .lesson-favorite {
+  color: #e27e38;
+}
+
+.lesson-card:nth-child(6n + 5) .lesson-status,
+.lesson-card:nth-child(6n + 5) .lesson-favorite {
+  color: #dc679a;
+}
+
+.lesson-card:nth-child(6n) .lesson-status,
+.lesson-card:nth-child(6n) .lesson-favorite {
+  color: #8060d7;
+}
 
 /* ---------- Lesson Number ---------- */
 
@@ -3014,6 +3044,47 @@ textarea {
 }
 
 
+/* =========================================================
+   37 — SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar {
+
+    width:
+        5px;
+
+    height:
+        5px;
+}
+
+
+::-webkit-scrollbar-track {
+    background:
+        transparent;
+}
+
+
+::-webkit-scrollbar-thumb {
+
+    background:
+        transparent;
+
+    border-radius:
+        20px;
+}
+
+
+/* Firefox */
+
+* {
+    scrollbar-width:
+        thin;
+
+    scrollbar-color:
+        #000000
+        transparent;
+}
+
 
 /* =========================================================
    38 — HIDDEN
@@ -3319,486 +3390,134 @@ textarea {
             38px;
     }
 }
-
-
-
 /* =========================================================
-   AUDIO / TEXT TO SPEECH
-   Soft Glass • Comfortable • Light / Dark
+   FAVORITE STAR
 ========================================================= */
 
-
-/* =========================================================
-   AUDIO SECTION
-========================================================= */
-
-.audio-section {
-
-    width: 100%;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 10px;
-
-    margin-bottom: 20px;
-}
-
-
-/* =========================================================
-   SPEAK / STOP BUTTONS
-========================================================= */
-
-.speak-btn,
-.stop-speak-btn {
-
-    min-height: 46px;
+.favorite-star {
 
     display: inline-flex;
 
     align-items: center;
-
     justify-content: center;
 
-    gap: 8px;
+    color: var(--pink);
 
-    padding:
-        0 17px;
+    font-size: 21px;
 
-    border-radius:
-        var(--radius-md);
-
-    font-family:
-        inherit;
-
-    font-size:
-        14px;
-
-    font-weight:
-        700;
-
-    cursor:
-        pointer;
+    line-height: 1;
 
     transition:
-        background var(--transition),
-        border-color var(--transition),
         color var(--transition),
-        box-shadow var(--transition),
-        transform var(--transition);
-}
-
-
-/* =========================================================
-   READING BUTTON
-========================================================= */
-
-.speak-btn {
-
-    flex: 1;
-
-    background:
-        var(--glass-light);
-
-    color:
-        #ffffff;
-
-    border:
-        1px solid
-        rgba(255,255,255,.18);
-
-    box-shadow:
-        0 7px 20px
-        rgba(134,87,245,.20);
-}
-
-
-.speak-btn:hover {
-
-    transform:
-        translateY(-2px);
-
-    box-shadow:
-        0 10px 26px
-        rgba(134,87,245,.27);
-}
-
-
-.speak-btn:active {
-
-    transform:
-        scale(.97);
-}
-
-
-/* =========================================================
-   SPEAKER ICON
-========================================================= */
-
-.speak-icon {
-
-    width:
-        29px;
-
-    height:
-        29px;
-
-    display:
-        inline-flex;
-
-    align-items:
-        center;
-
-    justify-content:
-        center;
-
-    flex-shrink:
-        0;
-
-    border-radius:
-        10px;
-
-    background:
-        rgba(255,255,255,.16);
-
-    font-size:
-        16px;
-
-    transition:
         transform var(--transition),
-        background var(--transition);
+        filter var(--transition);
 }
 
 
-.speak-btn:hover .speak-icon {
+/* زر المفضلة في الهيدر */
 
-    transform:
-        scale(1.08);
-
-    background:
-        rgba(255,255,255,.22);
-}
-
-
-/* =========================================================
-   STOP BUTTON
-========================================================= */
-
-.stop-speak-btn {
+.favorite-header-btn {
 
     background:
-        var(--glass-light);
-
-    border:
-        1px solid
-        var(--glass-border);
+        var(--pink-soft);
 
     color:
-        var(--text-soft);
-
-    box-shadow:
-        0 4px 14px
-        rgba(76,55,130,.06);
-}
-
-
-.stop-speak-btn:hover {
-
-    background:
-        var(--red-soft);
+        var(--pink);
 
     border-color:
-        rgba(255,89,100,.25);
+        rgba(255, 79, 154, .18);
+}
+
+
+.favorite-header-btn:hover {
+
+    background:
+        var(--pink-soft);
 
     color:
-        var(--danger);
+        var(--pink);
+}
+
+
+.favorite-header-btn:hover .favorite-star {
 
     transform:
-        translateY(-1px);
-}
+        scale(1.12);
 
-
-/* =========================================================
-   SPEECH RATE CONTROL
-========================================================= */
-
-.speech-controls {
-
-    width:
-        100%;
-
-    margin-top:
-        12px;
-
-    padding:
-        11px
-        13px;
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    justify-content:
-        space-between;
-
-    gap:
-        12px;
-
-    border-radius:
-        var(--radius-md);
-
-    background:
-        var(--glass-light);
-
-    border:
-        1px solid
-        var(--glass-border);
-
-    transition:
-        background var(--transition),
-        border-color var(--transition);
-}
-
-
-/* =========================================================
-   LABEL
-========================================================= */
-
-.speech-controls label {
-
-    color:
-        var(--text-soft);
-
-    font-size:
-        12px;
-
-    font-weight:
-        700;
-
-    white-space:
-        nowrap;
-}
-
-
-/* =========================================================
-   SELECT
-========================================================= */
-
-#speechRate {
-
-    min-width:
-        150px;
-
-    height:
-        40px;
-
-    padding:
-        0 12px;
-
-    border:
-        1px solid
-        var(--glass-border);
-
-    border-radius:
-        11px;
-
-    background:
-        var(--glass);
-
-    color:
-        var(--text);
-
-    font-family:
-        inherit;
-
-    font-size:
-        12px;
-
-    font-weight:
-        650;
-
-    outline:
-        none;
-
-    cursor:
-        pointer;
-
-    transition:
-        background var(--transition),
-        border-color var(--transition),
-        color var(--transition),
-        box-shadow var(--transition);
-}
-
-
-#speechRate:hover {
-
-    border-color:
-        color-mix(
-            in srgb,
-            var(--primary) 40%,
-            var(--glass-border)
+    filter:
+        drop-shadow(
+            0 3px 7px
+            rgba(255, 79, 154, .28)
         );
 }
 
 
-#speechRate:focus {
+/* زر المفضلة داخل القارئ */
 
-    border-color:
-        var(--primary);
-
-    box-shadow:
-        0 0 0 3px
-        var(--primary-soft);
-}
-
-
-/* =========================================================
-   SELECT OPTIONS
-========================================================= */
-
-#speechRate option {
-
-    background:
-        var(--bg-soft);
+.favorite-btn {
 
     color:
-        var(--text);
+        var(--pink);
 }
 
 
-/* =========================================================
-   FOCUS ACCESSIBILITY
-========================================================= */
+.favorite-btn .favorite-star {
 
-.speak-btn:focus-visible,
-.stop-speak-btn:focus-visible,
-#speechRate:focus-visible {
-
-    outline:
-        2px solid
-        var(--primary);
-
-    outline-offset:
-        3px;
+    color:
+        var(--pink);
 }
 
 
-/* =========================================================
-   MOBILE
-========================================================= */
+/* عند التفعيل */
 
-@media (max-width: 600px) {
+.favorite-btn[aria-pressed="true"] .favorite-star,
+.favorite-header-btn[aria-pressed="true"] .favorite-star {
 
-    .audio-section {
+    color:
+        var(--pink);
 
-        gap:
-            8px;
+    filter:
+        drop-shadow(
+            0 3px 8px
+            rgba(255, 79, 154, .30)
+        );
 
-        margin-top:
-            16px;
-    }
-
-
-    .speak-btn,
-    .stop-speak-btn {
-
-        min-height:
-            44px;
-
-        padding:
-            0 13px;
-
-        border-radius:
-            13px;
-
-        font-size:
-            13px;
-    }
-
-
-    .speak-icon {
-
-        width:
-            27px;
-
-        height:
-            27px;
-
-        border-radius:
-            9px;
-
-        font-size:
-            15px;
-    }
-
-
-    .speech-controls {
-
-        flex-direction:
-            column;
-
-        align-items:
-            stretch;
-
-        gap:
-            8px;
-
-        padding:
-            12px;
-    }
-
-
-    .speech-controls label {
-
-        font-size:
-            12px;
-    }
-
-
-    #speechRate {
-
-        width:
-            100%;
-
-        min-width:
-            0;
-
-        height:
-            42px;
-    }
+    transform:
+        scale(1.08);
 }
 
 
-/* =========================================================
-   VERY SMALL DEVICES
-========================================================= */
+/* Dark Mode */
 
-@media (max-width: 360px) {
+[data-theme="dark"] .favorite-star {
 
-    .speak-btn,
-    .stop-speak-btn {
+    color:
+        var(--pink);
+}
 
-        padding:
-            0 10px;
+[data-theme="dark"] .favorite-header-btn {
 
-        font-size:
-            12px;
-    }
+    background:
+        rgba(255, 98, 170, .14);
+
+    border-color:
+        rgba(255, 98, 170, .20);
+}
+.lesson-number {
+  color: var(--number-color);
+  font-weight: 800;
+}
 
 
-    .speak-icon {
+.lesson-status {
+  color: var(--number-color);
+  font-weight: 900;
+  font-size: 1.2rem;
+}
 
-        width:
-            25px;
 
-        height:
-            25px;
-
-        font-size:
-            14px;
-    }
+.lesson-favorite {
+  color: var(--number-color);
+  font-size: 1.15rem;
+  font-weight: 900;
 }

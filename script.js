@@ -1,98 +1,121 @@
 "use strict";
 
 /* =========================================================
-   ENGLISH+
-   3 CHAPTERS - 4MS
-   Chapter 1 → Chapter 3
+   ENGLISH 4MS
+   CHAPTERS 1 → 3
 ========================================================= */
+
+
 /* =========================================================
-   SPEECH RATE
+   DOM
 ========================================================= */
+
+const DOM = {
+
+    app: document.getElementById("app"),
+
+    menuBtn: document.getElementById("menuBtn"),
+    closeMenuBtn: document.getElementById("closeMenuBtn"),
+    sideMenu: document.getElementById("sideMenu"),
+    menuOverlay: document.getElementById("menuOverlay"),
+
+    searchBtn: document.getElementById("searchBtn"),
+    searchPanel: document.getElementById("searchPanel"),
+    searchInput: document.getElementById("searchInput"),
+    clearSearchBtn: document.getElementById("clearSearchBtn"),
+
+    favoritesBtn: document.getElementById("favoritesBtn"),
+
+    levelsBtn: document.getElementById("levels"),
+    levelSection: document.querySelector(".level-section"),
+
+    lessonsList: document.getElementById("lessonsList"),
+    emptyState: document.getElementById("emptyState"),
+
+    lessonsTitle: document.getElementById("lessonsTitle"),
+    lessonsSubtitle: document.getElementById("lessonsSubtitle"),
+    lessonCount: document.getElementById("lessonCount"),
+
+    readerModal: document.getElementById("readerModal"),
+    modalOverlay: document.querySelector(".modal-overlay"),
+
+    closeReaderBtn: document.getElementById("closeReaderBtn"),
+
+    readerLevel: document.getElementById("readerLevel"),
+    readerLessonNumber: document.getElementById("readerLessonNumber"),
+
+    readerFavoriteBtn: document.getElementById("readerFavoriteBtn"),
+
+    readerTitle: document.getElementById("readerTitle"),
+    readerTitleAr: document.getElementById("readerTitleAr"),
+
+    readerText: document.getElementById("readerText"),
+    readerTranslation: document.getElementById("readerTranslation"),
+
+    vocabularySection: document.getElementById("vocabularySection"),
+    vocabularyContainer: document.getElementById("vocabularyContainer"),
+
+    questionsSection: document.getElementById("questionsSection"),
+    questionsContainer: document.getElementById("questionsContainer"),
+
+    showAnswersBtn: document.getElementById("showAnswersBtn"),
+    answersContainer: document.getElementById("answersContainer"),
+
+    prevLessonBtn: document.getElementById("prevLessonBtn"),
+    nextLessonBtn: document.getElementById("nextLessonBtn"),
+
+    currentPosition: document.getElementById("currentPosition"),
+
+    continueMenuBtn: document.getElementById("continueMenuBtn"),
+    resetProgressBtn: document.getElementById("resetProgressBtn"),
+
+    toast: document.getElementById("toast"),
+    toastMessage: document.getElementById("toastMessage"),
+
+    openWebBtn: document.getElementById("openWebBtn")
+};
+
+
+/* =========================================================
+   EXTRA DOM
+========================================================= */
+
+const resetModal =
+    document.getElementById("resetModal");
+
+const cancelResetBtn =
+    document.getElementById("cancelResetBtn");
+
+const confirmResetBtn =
+    document.getElementById("confirmResetBtn");
+
+const resetModalOverlay =
+    document.getElementById("resetModalOverlay");
+
+const themeToggleBtn =
+    document.getElementById("themeToggleBtn");
 
 const speechRate =
-  document.getElementById("speechRate");
+    document.getElementById("speechRate");
 
 const speechRateValue =
-  document.getElementById("speechRateValue");
+    document.getElementById("speechRateValue");
 
 const speechRateControl =
-  document.getElementById("speechRateControl");
-document.addEventListener("click", (event) => {
-
-  if (
-    !speechRateControl ||
-    speechRateControl.classList.contains("hidden")
-  ) {
-    return;
-  }
-
-  const clickedInsideControl =
-    speechRateControl.contains(event.target);
-
-  const clickedSpeakButton =
-    DOM.speakBtn?.contains(event.target);
-
-  if (
-    !clickedInsideControl &&
-    !clickedSpeakButton
-  ) {
-    speechRateControl.classList.add("hidden");
-  }
-
-});
-
-const savedSpeechRate =
-  localStorage.getItem(
-    "englishPlusSpeechRate"
-  ) || "1";
-
-
-if (speechRate) {
-
-  speechRate.value =
-    savedSpeechRate;
-
-}
-
-
-if (speechRateValue) {
-
-  speechRateValue.textContent =
-    `${Number(savedSpeechRate).toFixed(1)}x`;
-
-}
-
-
-/* إخفاء التحكم عند البداية */
-
-if (speechRateControl) {
-
-  speechRateControl.classList.add(
-    "hidden"
-  );
-
-}
-
-
-/* عند تغيير السرعة */
+    document.getElementById("speechRateControl");
 
 
 /* =========================================================
-   CONFIGURATION
+   CONFIG
 ========================================================= */
 
 const CONFIG = {
 
     DATA_FILES: {
 
-        chapter1:
-            "chapter1.json",
-
-        chapter2:
-            "chapter2.json",
-
-        chapter3:
-            "chapter3.json"
+        chapter1: "chapter1.json",
+        chapter2: "chapter2.json",
+        chapter3: "chapter3.json"
 
     },
 
@@ -108,7 +131,13 @@ const CONFIG = {
             "english_plus_completed",
 
         LAST_LESSON:
-            "english_plus_last_lesson"
+            "english_plus_last_lesson",
+
+        SPEECH_RATE:
+            "english_plus_speech_rate",
+
+        THEME:
+            "english_plus_theme"
 
     },
 
@@ -116,20 +145,16 @@ const CONFIG = {
         "chapter1",
 
     CHAPTERS: [
-
         "chapter1",
-
         "chapter2",
-
         "chapter3"
-
     ]
 
 };
 
 
 /* =========================================================
-   APPLICATION STATE
+   STATE
 ========================================================= */
 
 const AppState = {
@@ -137,9 +162,7 @@ const AppState = {
     data: {
 
         chapter1: null,
-
         chapter2: null,
-
         chapter3: null
 
     },
@@ -159,6 +182,9 @@ const AppState = {
     showFavoritesOnly:
         false,
 
+    completedOnly:
+        false,
+
     favorites:
         [],
 
@@ -172,171 +198,65 @@ const AppState = {
 
 
 /* =========================================================
-   DOM
+   SPEECH RATE
 ========================================================= */
 
-const DOM = {
+const savedSpeechRate =
+    localStorage.getItem(
+        CONFIG.STORAGE_KEYS.SPEECH_RATE
+    ) || "1";
 
-    app:
-        document.getElementById("app"),
 
-    menuBtn:
-        document.getElementById("menuBtn"),
+if (speechRate) {
 
-    closeMenuBtn:
-        document.getElementById("closeMenuBtn"),
+    speechRate.value =
+        savedSpeechRate;
 
-    sideMenu:
-        document.getElementById("sideMenu"),
+}
 
-    menuOverlay:
-        document.getElementById("menuOverlay"),
 
-    searchBtn:
-        document.getElementById("searchBtn"),
+if (speechRateValue) {
 
-    searchPanel:
-        document.getElementById("searchPanel"),
+    speechRateValue.textContent =
+        `${Number(savedSpeechRate).toFixed(1)}x`;
 
-    searchInput:
-        document.getElementById("searchInput"),
+}
 
-    clearSearchBtn:
-        document.getElementById("clearSearchBtn"),
 
-    favoritesBtn:
-        document.getElementById("favoritesBtn"),
+if (speechRateControl) {
 
-    levelsBtn:
-        document.getElementById("levels"),
+    speechRateControl.classList.add(
+        "hidden"
+    );
 
-    levelSection:
-        document.querySelector(".level-section"),
+}
 
-    lessonsList:
-        document.getElementById("lessonsList"),
 
-    emptyState:
-        document.getElementById("emptyState"),
+speechRate?.addEventListener(
+    "input",
+    () => {
 
-    lessonsTitle:
-        document.getElementById("lessonsTitle"),
+        const value =
+            Number(speechRate.value) || 1;
 
-    lessonsSubtitle:
-        document.getElementById("lessonsSubtitle"),
+        if (speechRateValue) {
 
-    lessonCount:
-        document.getElementById("lessonCount"),
+            speechRateValue.textContent =
+                `${value.toFixed(1)}x`;
 
-    readerModal:
-        document.getElementById("readerModal"),
+        }
 
-    modalOverlay:
-        document.querySelector(".modal-overlay"),
+        localStorage.setItem(
+            CONFIG.STORAGE_KEYS.SPEECH_RATE,
+            String(value)
+        );
 
-    closeReaderBtn:
-        document.getElementById("closeReaderBtn"),
-
-    readerLevel:
-        document.getElementById("readerLevel"),
-
-    readerLessonNumber:
-        document.getElementById("readerLessonNumber"),
-
-    readerFavoriteBtn:
-        document.getElementById("readerFavoriteBtn"),
-
-    readerTitle:
-        document.getElementById("readerTitle"),
-
-    readerTitleAr:
-        document.getElementById("readerTitleAr"),
-
-    readerText:
-        document.getElementById("readerText"),
-
-    readerTranslation:
-        document.getElementById("readerTranslation"),
-
-    speakBtn:
-        document.getElementById("speakBtn"),
-
-    stopSpeakBtn:
-        document.getElementById("stopSpeakBtn"),
-
-    questionsSection:
-        document.getElementById("questionsSection"),
-
-    questionsContainer:
-        document.getElementById("questionsContainer"),
-
-    showAnswersBtn:
-        document.getElementById("showAnswersBtn"),
-
-    answersContainer:
-        document.getElementById("answersContainer"),
-
-    prevLessonBtn:
-        document.getElementById("prevLessonBtn"),
-
-    nextLessonBtn:
-        document.getElementById("nextLessonBtn"),
-
-    currentPosition:
-        document.getElementById("currentPosition"),
-
-    continueMenuBtn:
-        document.getElementById("continueMenuBtn"),
-
-    resetProgressBtn:
-        document.getElementById("resetProgressBtn"),
-
-    toast:
-        document.getElementById("toast"),
-
-    toastMessage:
-        document.getElementById("toastMessage")
-
-};
+    }
+);
 
 
 /* =========================================================
-   RESET MODAL DOM
-========================================================= */
-
-const resetModal =
-    document.getElementById(
-        "resetModal"
-    );
-
-const cancelResetBtn =
-    document.getElementById(
-        "cancelResetBtn"
-    );
-
-const confirmResetBtn =
-    document.getElementById(
-        "confirmResetBtn"
-    );
-
-const resetModalOverlay =
-    document.getElementById(
-        "resetModalOverlay"
-    );
-
-
-/* =========================================================
-   THEME
-========================================================= */
-
-const themeToggleBtn =
-    document.getElementById(
-        "themeToggleBtn"
-    );
-
-
-/* =========================================================
-   INITIALIZATION
+   INIT
 ========================================================= */
 
 document.addEventListener(
@@ -347,67 +267,69 @@ document.addEventListener(
 
 async function init() {
 
-  loadStorage();
+    loadStorage();
 
-  bindEvents();
+    loadTheme();
 
-  await loadAllChapters();
+    bindEvents();
 
-  updateThemeButton();
+    await setupAndroidBackButton();
 
-  updateUI();
+    await loadChapter();
 
-  /* فتح الدرس القادم من رابط GitHub Pages */
+    updateThemeButton();
 
-  openLessonFromURL();
+    updateUI();
 
 }
 
 
 /* =========================================================
-   LOAD ALL CHAPTERS
+   LOAD CHAPTERS
 ========================================================= */
 
-async function loadAllChapters() {
+async function loadChapter() {
 
-    try {
+    for (
+        const chapter of CONFIG.CHAPTERS
+    ) {
 
-        await Promise.all(
+        try {
 
-            CONFIG.CHAPTERS.map(
+            await loadChapterData(
+                chapter
+            );
 
-                chapter =>
-                    loadChapter(
-                        chapter
-                    )
+            console.log(
+                `${chapter}.json loaded successfully`
+            );
 
-            )
+        } catch (error) {
 
-        );
+            console.warn(
+                `Unable to load ${chapter}.json`,
+                error
+            );
 
-        console.log(
-            "English+ chapters loaded successfully."
-        );
+        }
 
-    } catch (error) {
+    }
 
-        console.error(
-            "Chapter loading error:",
-            error
-        );
+    if (
+        !AppState.data[
+            AppState.currentChapter
+        ]
+    ) {
 
-        showDataError();
+        AppState.currentChapter =
+            "chapter1";
 
     }
 
 }
 
 
-/* =========================================================
-   LOAD ONE CHAPTER
-========================================================= */
-
-async function loadChapter(
+async function loadChapterData(
     chapter
 ) {
 
@@ -416,40 +338,32 @@ async function loadChapter(
             chapter
         ];
 
-
     if (!file) {
 
         throw new Error(
-            `No data file configured for ${chapter}`
+            `No data file for ${chapter}`
         );
 
     }
-
 
     const response =
         await fetch(
             file,
             {
-                cache:
-                    "no-store"
+                cache: "no-store"
             }
         );
-
 
     if (!response.ok) {
 
         throw new Error(
-
-            `Failed to load ${file}: ${response.status}`
-
+            `Failed to load ${file}`
         );
 
     }
 
-
     const data =
         await response.json();
-
 
     AppState.data[
         chapter
@@ -463,7 +377,7 @@ async function loadChapter(
 
 
 /* =========================================================
-   NORMALIZE CHAPTER DATA
+   NORMALIZE DATA
 ========================================================= */
 
 function normalizeChapterData(
@@ -471,40 +385,24 @@ function normalizeChapterData(
     chapter
 ) {
 
-    /*
-       Supports:
-
-       {
-           "chapter": "chapter1",
-           "title": "الفصل الأول",
-           "lessons": []
-       }
-
-       Also supports direct array:
-
-       []
-    */
-
-
-    if (Array.isArray(data)) {
+    if (
+        Array.isArray(data)
+    ) {
 
         return {
 
-            chapter:
-                chapter,
+            chapter: chapter,
 
             title:
                 getChapterTitle(
                     chapter
                 ),
 
-            lessons:
-                data
+            lessons: data
 
         };
 
     }
-
 
     if (
         !data ||
@@ -513,21 +411,18 @@ function normalizeChapterData(
 
         return {
 
-            chapter:
-                chapter,
+            chapter: chapter,
 
             title:
                 getChapterTitle(
                     chapter
                 ),
 
-            lessons:
-                []
+            lessons: []
 
         };
 
     }
-
 
     return {
 
@@ -542,13 +437,8 @@ function normalizeChapterData(
             ),
 
         lessons:
-
-            Array.isArray(
-                data.lessons
-            )
-
+            Array.isArray(data.lessons)
                 ? data.lessons
-
                 : []
 
     };
@@ -567,7 +457,6 @@ function loadStorage() {
             CONFIG.STORAGE_KEYS.CHAPTER
         );
 
-
     if (
         CONFIG.CHAPTERS.includes(
             savedChapter
@@ -579,20 +468,14 @@ function loadStorage() {
 
     }
 
-
     AppState.favorites =
         loadArrayFromStorage(
-
             CONFIG.STORAGE_KEYS.FAVORITES
-
         );
-
 
     AppState.completed =
         loadArrayFromStorage(
-
             CONFIG.STORAGE_KEYS.COMPLETED
-
         );
 
 }
@@ -606,13 +489,10 @@ function loadArrayFromStorage(
 
         const value =
             JSON.parse(
-
                 localStorage.getItem(
                     key
                 )
-
             );
-
 
         if (
             Array.isArray(value)
@@ -627,15 +507,10 @@ function loadArrayFromStorage(
     } catch (error) {
 
         console.warn(
-
-            `Invalid storage data: ${key}`,
-
-            error
-
+            `Invalid storage: ${key}`
         );
 
     }
-
 
     return [];
 
@@ -645,33 +520,22 @@ function loadArrayFromStorage(
 function saveStorage() {
 
     localStorage.setItem(
-
         CONFIG.STORAGE_KEYS.CHAPTER,
-
         AppState.currentChapter
-
     );
 
-
     localStorage.setItem(
-
         CONFIG.STORAGE_KEYS.FAVORITES,
-
         JSON.stringify(
             AppState.favorites
         )
-
     );
 
-
     localStorage.setItem(
-
         CONFIG.STORAGE_KEYS.COMPLETED,
-
         JSON.stringify(
             AppState.completed
         )
-
     );
 
 }
@@ -683,269 +547,271 @@ function saveStorage() {
 
 function bindEvents() {
 
-    /* MENU */
-
     DOM.menuBtn?.addEventListener(
-
         "click",
-
         openMenu
-
     );
-
 
     DOM.closeMenuBtn?.addEventListener(
-
         "click",
-
         closeMenu
-
     );
-
 
     DOM.menuOverlay?.addEventListener(
-
         "click",
-
         closeMenu
-
     );
 
-
-    /* SEARCH */
 
     DOM.searchBtn?.addEventListener(
-
         "click",
-
         toggleSearch
-
     );
-
 
     DOM.searchInput?.addEventListener(
-
         "input",
-
         handleSearch
-
     );
-
 
     DOM.clearSearchBtn?.addEventListener(
-
         "click",
-
         clearSearch
-
     );
 
-
-    /* FAVORITES */
 
     DOM.favoritesBtn?.addEventListener(
-
         "click",
-
         toggleFavorites
-
     );
 
-
-    /* CHAPTERS */
 
     DOM.levelsBtn?.addEventListener(
-
         "click",
-
         toggleChapters
-
     );
-
 
     DOM.levelSection?.addEventListener(
-
         "click",
-
         handleChapterClick
-
     );
 
-
-    /* READER */
 
     DOM.closeReaderBtn?.addEventListener(
-
         "click",
-
         closeReader
-
     );
-
 
     DOM.modalOverlay?.addEventListener(
-
         "click",
-
         closeReader
-
     );
-
 
     DOM.readerFavoriteBtn?.addEventListener(
-
         "click",
-
         toggleCurrentFavorite
-
-    );
-
-
-    DOM.speakBtn?.addEventListener(
-
-        "click",
-
-        speakCurrentLesson
-
-    );
-
-
-    DOM.stopSpeakBtn?.addEventListener(
-
-        "click",
-
-        stopSpeaking
-
-    );
-
-
-    DOM.showAnswersBtn?.addEventListener(
-
-        "click",
-
-        toggleAnswers
-
     );
 
 
     DOM.prevLessonBtn?.addEventListener(
-
         "click",
-
         previousLesson
-
     );
-
 
     DOM.nextLessonBtn?.addEventListener(
-
         "click",
-
         nextLesson
-
     );
 
 
-    /* SIDE NAVIGATION */
+    DOM.openWebBtn?.addEventListener(
+        "click",
+        handleAudioButton
+    );
+
+
+    DOM.continueMenuBtn?.addEventListener(
+        "click",
+        continueLastLesson
+    );
+
+
+    DOM.resetProgressBtn?.addEventListener(
+        "click",
+        resetProgress
+    );
+
+    cancelResetBtn?.addEventListener(
+        "click",
+        closeResetModal
+    );
+
+    resetModalOverlay?.addEventListener(
+        "click",
+        closeResetModal
+    );
+
+    confirmResetBtn?.addEventListener(
+        "click",
+        confirmReset
+    );
+
+
+    themeToggleBtn?.addEventListener(
+        "click",
+        toggleTheme
+    );
+
 
     document
         .querySelectorAll(
             ".side-nav-item"
         )
         .forEach(
-
             button => {
 
                 button.addEventListener(
-
                     "click",
-
                     handleSideNavigation
-
                 );
 
             }
-
         );
 
 
-    /* CONTINUE */
-
-    DOM.continueMenuBtn?.addEventListener(
-
-        "click",
-
-        continueLastLesson
-
-    );
-
-
-    /* RESET */
-
-    DOM.resetProgressBtn?.addEventListener(
-
-        "click",
-
-        resetProgress
-
-    );
-
-
-    /* RESET MODAL */
-
-    cancelResetBtn?.addEventListener(
-
-        "click",
-
-        closeResetModal
-
-    );
-
-
-    resetModalOverlay?.addEventListener(
-
-        "click",
-
-        closeResetModal
-
-    );
-
-
-    confirmResetBtn?.addEventListener(
-
-        "click",
-
-        confirmReset
-
-    );
-
-
-    /* THEME */
-
-    themeToggleBtn?.addEventListener(
-
-        "click",
-
-        toggleTheme
-
-    );
-
-
-    /* KEYBOARD */
-
     document.addEventListener(
-
         "keydown",
-
         handleKeyboard
-
     );
 
 }
 
 
 /* =========================================================
-   UI UPDATE
+   ANDROID BACK
+========================================================= */
+
+async function setupAndroidBackButton() {
+
+    try {
+
+        const { App } =
+            await import(
+                "@capacitor/app"
+            );
+
+        App.addListener(
+            "backButton",
+            () => {
+
+                if (
+                    DOM.readerModal &&
+                    !DOM.readerModal.classList.contains(
+                        "hidden"
+                    )
+                ) {
+
+                    closeReader();
+                    return;
+
+                }
+
+                if (
+                    resetModal &&
+                    !resetModal.classList.contains(
+                        "hidden"
+                    )
+                ) {
+
+                    closeResetModal();
+                    return;
+
+                }
+
+                if (
+                    DOM.sideMenu?.classList.contains(
+                        "open"
+                    )
+                ) {
+
+                    closeMenu();
+                    return;
+
+                }
+
+                if (
+                    DOM.searchPanel &&
+                    !DOM.searchPanel.classList.contains(
+                        "hidden"
+                    )
+                ) {
+
+                    DOM.searchPanel.classList.add(
+                        "hidden"
+                    );
+
+                    return;
+
+                }
+
+                if (
+                    DOM.levelSection &&
+                    !DOM.levelSection.classList.contains(
+                        "hidden"
+                    )
+                ) {
+
+                    hideChapters();
+                    return;
+
+                }
+
+                showExitConfirmation();
+
+            }
+        );
+
+    } catch (error) {
+
+        console.warn(
+            "Capacitor App plugin unavailable",
+            error
+        );
+
+    }
+
+}
+
+
+async function showExitConfirmation() {
+
+    try {
+
+        const { App } =
+            await import(
+                "@capacitor/app"
+            );
+
+        if (
+            window.confirm(
+                "Do you want to exit English 4MS?"
+            )
+        ) {
+
+            await App.exitApp();
+
+        }
+
+    } catch (error) {
+
+        console.warn(error);
+
+    }
+
+}
+
+
+/* =========================================================
+   UI
 ========================================================= */
 
 function updateUI() {
@@ -960,10 +826,10 @@ function updateUI() {
 
 
 /* =========================================================
-   CHAPTER MANAGEMENT
+   CHAPTERS
 ========================================================= */
 
-async function handleChapterClick(
+function handleChapterClick(
     event
 ) {
 
@@ -972,18 +838,15 @@ async function handleChapterClick(
             ".level-btn"
         );
 
-
     if (!button) {
 
         return;
 
     }
 
-
     const chapter =
         button.dataset.chapter ||
         button.dataset.level;
-
 
     if (
         !CONFIG.CHAPTERS.includes(
@@ -995,18 +858,20 @@ async function handleChapterClick(
 
     }
 
-
     AppState.currentChapter =
         chapter;
 
+    AppState.currentLessonIndex =
+        0;
+
+    AppState.currentLesson =
+        null;
 
     AppState.searchQuery =
         "";
 
-
     AppState.showFavoritesOnly =
         false;
-
 
     if (DOM.searchInput) {
 
@@ -1015,9 +880,7 @@ async function handleChapterClick(
 
     }
 
-
     saveStorage();
-
 
     updateActiveChapter();
 
@@ -1035,74 +898,40 @@ function updateActiveChapter() {
             ".level-btn"
         )
         .forEach(
-
             button => {
 
-                const buttonChapter =
-
+                const chapter =
                     button.dataset.chapter ||
-
                     button.dataset.level;
 
-
                 const active =
-
-                    buttonChapter ===
-
+                    chapter ===
                     AppState.currentChapter;
 
-
                 button.classList.toggle(
-
                     "active",
-
                     active
-
                 );
 
-
                 button.setAttribute(
-
                     "aria-selected",
-
                     String(active)
-
                 );
 
             }
-
         );
-
-
-    const title =
-        getCurrentChapterTitle();
-
-
-    if (
-        DOM.lessonsTitle &&
-        !AppState.showFavoritesOnly
-    ) {
-
-        DOM.lessonsTitle.textContent =
-            title;
-
-    }
 
 }
 
 
 function toggleChapters() {
 
-    const isHidden =
-
+    const hidden =
         DOM.levelSection?.classList.contains(
-
             "hidden"
-
         );
 
-
-    if (isHidden) {
+    if (hidden) {
 
         showChapters();
 
@@ -1118,18 +947,7 @@ function toggleChapters() {
 function showChapters() {
 
     DOM.levelSection?.classList.remove(
-
         "hidden"
-
-    );
-
-
-    DOM.levelsBtn?.setAttribute(
-
-        "aria-pressed",
-
-        "true"
-
     );
 
 }
@@ -1138,31 +956,19 @@ function showChapters() {
 function hideChapters() {
 
     DOM.levelSection?.classList.add(
-
         "hidden"
-
-    );
-
-
-    DOM.levelsBtn?.setAttribute(
-
-        "aria-pressed",
-
-        "false"
-
     );
 
 }
 
 
 /* =========================================================
-   GET CURRENT CHAPTER
+   CURRENT CHAPTER
 ========================================================= */
 
 function getCurrentChapterData() {
 
     return (
-
         AppState.data[
             AppState.currentChapter
         ] || {
@@ -1175,11 +981,9 @@ function getCurrentChapterData() {
                     AppState.currentChapter
                 ),
 
-            lessons:
-                []
+            lessons: []
 
         }
-
     );
 
 }
@@ -1187,18 +991,13 @@ function getCurrentChapterData() {
 
 function getCurrentChapterLessons() {
 
-    const chapterData =
+    const data =
         getCurrentChapterData();
 
-
     return Array.isArray(
-
-        chapterData.lessons
-
+        data.lessons
     )
-
-        ? chapterData.lessons
-
+        ? data.lessons
         : [];
 
 }
@@ -1206,17 +1005,35 @@ function getCurrentChapterLessons() {
 
 function getCurrentChapterTitle() {
 
-    const chapterData =
-        getCurrentChapterData();
+    return getChapterTitle(
+        AppState.currentChapter
+    );
+
+}
 
 
-    return (
+/* =========================================================
+   LESSON ID
+========================================================= */
 
-        chapterData.title ||
+function getLessonId(
+    lesson,
+    index
+) {
 
-        getChapterTitle(
-            AppState.currentChapter
-        )
+    /*
+       مهم:
+       حتى لو كان id داخل chapter2
+       نفس id الموجود داخل chapter1،
+       يتم الفصل بينهما.
+    */
+
+    return String(
+
+        `${AppState.currentChapter}_${
+            lesson?.id ??
+            index
+        }`
 
     );
 
@@ -1224,7 +1041,7 @@ function getCurrentChapterTitle() {
 
 
 /* =========================================================
-   FILTER LESSONS
+   VISIBLE LESSONS
 ========================================================= */
 
 function getVisibleLessons() {
@@ -1233,105 +1050,71 @@ function getVisibleLessons() {
         getCurrentChapterLessons();
 
 
-    /* SEARCH */
-
     if (
         AppState.searchQuery.trim()
     ) {
 
         const query =
-
             AppState.searchQuery
-
                 .toLowerCase()
-
                 .trim();
 
-
         lessons =
-
             lessons.filter(
-
                 lesson => {
 
                     const title =
-
                         String(
                             lesson.title ||
                             ""
                         ).toLowerCase();
 
-
                     const titleAr =
-
                         String(
                             lesson.title_ar ||
                             ""
                         ).toLowerCase();
 
-
                     const content =
-
                         String(
                             lesson.content ||
                             ""
                         ).toLowerCase();
 
-
                     const translation =
-
                         String(
-
                             lesson.translation_ar ||
-
                             ""
-
                         ).toLowerCase();
-
 
                     return (
 
-                        title.includes(
-                            query
-                        ) ||
-
-                        titleAr.includes(
-                            query
-                        ) ||
-
-                        content.includes(
-                            query
-                        ) ||
-
-                        translation.includes(
-                            query
-                        )
+                        title.includes(query) ||
+                        titleAr.includes(query) ||
+                        content.includes(query) ||
+                        translation.includes(query)
 
                     );
 
                 }
-
             );
 
     }
 
-
-    /* FAVORITES */
 
     if (
         AppState.showFavoritesOnly
     ) {
 
         lessons =
-
             lessons.filter(
-
-                lesson =>
-
+                (lesson, index) =>
                     isFavorite(
-                        lesson.id
+                        getLessonId(
+                            lesson,
+                            index
+                        )
                     )
-
             );
 
     }
@@ -1351,11 +1134,8 @@ function renderLessons() {
     const lessons =
         getVisibleLessons();
 
-
     updateLessonsHeader(
-
         lessons.length
-
     );
 
 
@@ -1370,13 +1150,9 @@ function renderLessons() {
 
         }
 
-
         DOM.emptyState?.classList.remove(
-
             "hidden"
-
         );
-
 
         return;
 
@@ -1384,36 +1160,24 @@ function renderLessons() {
 
 
     DOM.emptyState?.classList.add(
-
         "hidden"
-
     );
 
 
     if (DOM.lessonsList) {
 
         DOM.lessonsList.innerHTML =
-
             lessons
-
                 .map(
-
                     (lesson, index) =>
-
                         createLessonCard(
-
                             lesson,
-
                             index
-
                         )
-
                 )
-
                 .join("");
 
     }
-
 
     attachLessonEvents();
 
@@ -1421,7 +1185,7 @@ function renderLessons() {
 
 
 /* =========================================================
-   LESSON HEADER
+   HEADER
 ========================================================= */
 
 function updateLessonsHeader(
@@ -1432,40 +1196,47 @@ function updateLessonsHeader(
         AppState.showFavoritesOnly
     ) {
 
-        DOM.lessonsTitle.textContent =
+        if (DOM.lessonsTitle) {
 
-            "Favorite Lessons";
+            DOM.lessonsTitle.textContent =
+                "النصوص المفضلة";
 
+        }
 
-        DOM.lessonsSubtitle.textContent =
+        if (DOM.lessonsSubtitle) {
 
-            "Your saved lessons";
+            DOM.lessonsSubtitle.textContent =
+                "النصوص التي حفظتها في المفضلة.";
+
+        }
 
     } else {
 
-        DOM.lessonsTitle.textContent =
+        if (DOM.lessonsTitle) {
 
-            getCurrentChapterTitle();
+            DOM.lessonsTitle.textContent =
+                getCurrentChapterTitle();
 
+        }
 
-        DOM.lessonsSubtitle.textContent =
+        if (DOM.lessonsSubtitle) {
 
-            getChapterDescription(
+            DOM.lessonsSubtitle.textContent =
+                getChapterDescription(
+                    AppState.currentChapter
+                );
 
-                AppState.currentChapter
-
-            );
+        }
 
     }
 
 
-    DOM.lessonCount.textContent =
+    if (DOM.lessonCount) {
 
-        `${count} ${
-            count === 1
-                ? "lesson"
-                : "lessons"
-        }`;
+        DOM.lessonCount.textContent =
+            `${count} نص`;
+
+    }
 
 }
 
@@ -1480,62 +1251,37 @@ function createLessonCard(
 ) {
 
     const id =
-
-        String(
-
-            lesson.id ??
-
-            `${AppState.currentChapter}_${index}`
-
+        getLessonId(
+            lesson,
+            index
         );
-
 
     const completed =
         isCompleted(id);
 
-
     const favorite =
         isFavorite(id);
-
 
     return `
 
         <article
-
             class="
                 lesson-card
                 ${completed ? "completed" : ""}
                 ${favorite ? "is-favorite" : ""}
             "
-
             data-lesson-id="${escapeAttribute(id)}"
-
             tabindex="0"
-
             role="button"
-
-            aria-label="${escapeAttribute(
-
-                lesson.title ||
-
-                "Open lesson"
-
-            )}"
-
         >
 
             <div class="lesson-number">
 
                 ${String(
-
                     index + 1
-
                 ).padStart(
-
                     2,
-
                     "0"
-
                 )}
 
             </div>
@@ -1546,24 +1292,17 @@ function createLessonCard(
                 <h3>
 
                     ${escapeHTML(
-
                         lesson.title ||
-
-                        "Untitled Lesson"
-
+                        "عنوان النص"
                     )}
 
                 </h3>
 
-
                 <p>
 
                     ${escapeHTML(
-
                         lesson.title_ar ||
-
                         ""
-
                     )}
 
                 </p>
@@ -1574,13 +1313,9 @@ function createLessonCard(
             <div class="lesson-status">
 
                 ${
-
                     completed
-
-                        ? "🖊"
-
+                        ? "✓"
                         : ""
-
                 }
 
             </div>
@@ -1589,13 +1324,9 @@ function createLessonCard(
             <div class="lesson-favorite">
 
                 ${
-
                     favorite
-
-                        ? "☆"
-
+                        ? '<span class="blue-star">★</span>'
                         : ""
-
                 }
 
             </div>
@@ -1618,59 +1349,41 @@ function attachLessonEvents() {
             ".lesson-card"
         )
         .forEach(
-
             card => {
 
                 card.addEventListener(
-
                     "click",
-
                     () => {
 
                         openLesson(
-
                             card.dataset.lessonId
-
                         );
 
                     }
-
                 );
 
 
                 card.addEventListener(
-
                     "keydown",
-
                     event => {
 
                         if (
-
-                            event.key ===
-                                "Enter" ||
-
-                            event.key ===
-                                " "
-
+                            event.key === "Enter" ||
+                            event.key === " "
                         ) {
 
                             event.preventDefault();
 
-
                             openLesson(
-
                                 card.dataset.lessonId
-
                             );
 
                         }
 
                     }
-
                 );
 
             }
-
         );
 
 }
@@ -1687,29 +1400,15 @@ function openLesson(
     const lessons =
         getCurrentChapterLessons();
 
-
     const index =
-
         lessons.findIndex(
-
             (lesson, lessonIndex) =>
-
-                String(
-
-                    lesson.id ??
-
-                    `${AppState.currentChapter}_${lessonIndex}`
-
+                getLessonId(
+                    lesson,
+                    lessonIndex
                 ) ===
-
-                String(
-
-                    lessonId
-
-                )
-
+                String(lessonId)
         );
-
 
     if (
         index === -1
@@ -1719,35 +1418,26 @@ function openLesson(
 
     }
 
-
     AppState.currentLessonIndex =
         index;
-
 
     AppState.currentLesson =
         lessons[index];
 
-
     renderReader();
 
-
     DOM.readerModal?.classList.remove(
-
         "hidden"
-
     );
-
 
     document.body.style.overflow =
         "hidden";
 
-
     saveLastLesson(
-
-        AppState.currentLesson.id,
-
-        AppState.currentChapter
-
+        getLessonId(
+            AppState.currentLesson,
+            AppState.currentLessonIndex
+        )
     );
 
 }
@@ -1762,114 +1452,228 @@ function renderReader() {
     const lesson =
         AppState.currentLesson;
 
-
     if (!lesson) {
 
         return;
 
     }
 
-
     const lessons =
         getCurrentChapterLessons();
-
 
     const index =
         AppState.currentLessonIndex;
 
 
-    DOM.readerLevel.textContent =
+    if (DOM.readerLevel) {
 
-        getCurrentChapterTitle();
+        DOM.readerLevel.textContent =
+            getChapterTitle(
+                AppState.currentChapter
+            );
 
-
-    DOM.readerLessonNumber.textContent =
-
-        `Lesson ${index + 1}`;
-
-
-    DOM.readerTitle.textContent =
-
-        lesson.title ||
-
-        "Untitled Lesson";
+    }
 
 
-    DOM.readerTitleAr.textContent =
+    if (DOM.readerLessonNumber) {
 
-        lesson.title_ar ||
+        DOM.readerLessonNumber.textContent =
+            `النص ${index + 1}`;
 
-        "";
-
-
-    DOM.readerText.textContent =
-
-        lesson.content ||
-
-        "";
+    }
 
 
-    DOM.readerTranslation.textContent =
+    if (DOM.readerTitle) {
 
-        lesson.translation_ar ||
+        DOM.readerTitle.textContent =
+            lesson.title ||
+            "عنوان النص";
 
-        "No translation available.";
+    }
 
 
-    updateReaderFavoriteButton();
+    if (DOM.readerTitleAr) {
 
+        DOM.readerTitleAr.textContent =
+            lesson.title_ar ||
+            "";
+
+    }
+
+
+    if (DOM.readerText) {
+
+        DOM.readerText.textContent =
+            lesson.content ||
+            "";
+
+    }
+
+
+    if (DOM.readerTranslation) {
+
+        DOM.readerTranslation.textContent =
+            lesson.translation_ar ||
+            "لا توجد ترجمة متوفرة.";
+
+    }
+
+
+    renderVocabulary();
 
     renderQuestions();
 
+    updateReaderFavoriteButton();
 
     updateReaderNavigation(
-
         lessons.length
-
     );
 
 
     markAsCompleted(
-
         getLessonId(
-
             lesson,
-
             index
-
         )
-
     );
 
 }
 
 
 /* =========================================================
-   GET LESSON ID
+   VOCABULARY
 ========================================================= */
 
-function getLessonId(
-    lesson,
-    index
-) {
+function renderVocabulary() {
 
-    return String(
+    const lesson =
+        AppState.currentLesson;
 
-        lesson.id ??
+    const vocabulary =
+        lesson?.vocabulary ||
+        lesson?.words ||
+        [];
 
-        `${AppState.currentChapter}_${index}`
 
+    if (
+        !DOM.vocabularySection ||
+        !DOM.vocabularyContainer
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        !Array.isArray(vocabulary) ||
+        vocabulary.length === 0
+    ) {
+
+        DOM.vocabularySection.classList.add(
+            "hidden"
+        );
+
+        DOM.vocabularyContainer.innerHTML =
+            "";
+
+        return;
+
+    }
+
+
+    DOM.vocabularySection.classList.remove(
+        "hidden"
     );
+
+
+    DOM.vocabularyContainer.innerHTML =
+
+        vocabulary
+            .map(
+                item => {
+
+                    if (
+                        typeof item ===
+                        "string"
+                    ) {
+
+                        return `
+
+                            <div class="vocabulary-item">
+
+                                ${escapeHTML(item)}
+
+                            </div>
+
+                        `;
+
+                    }
+
+
+                    const word =
+                        item.word ||
+                        item.term ||
+                        "";
+
+                    const translation =
+                        item.translation_ar ||
+                        item.arabic ||
+                        item.meaning ||
+                        "";
+
+                    const english =
+                        item.translation_en ||
+                        "";
+
+
+                    return `
+
+                        <div class="vocabulary-item">
+
+                            <strong>
+
+                                ${escapeHTML(word)}
+
+                            </strong>
+
+                            ${
+                                translation
+                                    ? `
+                                        <span>
+                                            ${escapeHTML(
+                                                translation
+                                            )}
+                                        </span>
+                                      `
+                                    : ""
+                            }
+
+                            ${
+                                english
+                                    ? `
+                                        <small>
+                                            ${escapeHTML(
+                                                english
+                                            )}
+                                        </small>
+                                      `
+                                    : ""
+                            }
+
+                        </div>
+
+                    `;
+
+                }
+            )
+            .join("");
 
 }
 
 
 /* =========================================================
    QUESTIONS
-========================================================= */
-
-/* =========================================================
-   QUESTIONS — CLICK TO SHOW ANSWER
 ========================================================= */
 
 function renderQuestions() {
@@ -1885,66 +1689,38 @@ function renderQuestions() {
             : [];
 
 
-    /* إخفاء زر إظهار الإجابات */
-    DOM.showAnswersBtn?.classList.add(
-        "hidden"
-    );
-
-
-    /* إخفاء حاوية الإجابات القديمة */
-    DOM.answersContainer?.classList.add(
-        "hidden"
-    );
-
-
-    /* حذف الإجابات القديمة بأمان */
-    if (DOM.answersContainer) {
-
-        DOM.answersContainer.innerHTML =
-            "";
-
-    }
-
-
-    /* =====================================================
-       NO QUESTIONS
-    ===================================================== */
-
     if (
         questions.length === 0
     ) {
 
-        if (DOM.questionsContainer) {
-
-            DOM.questionsContainer.innerHTML =
-
-                `
-                    <p class="no-questions">
-                        No questions available.
-                    </p>
-                `;
-
-        }
+        DOM.questionsSection?.classList.add(
+            "hidden"
+        );
 
         return;
 
     }
 
 
-    /* =====================================================
-       RENDER QUESTIONS
-    ===================================================== */
+    DOM.questionsSection?.classList.remove(
+        "hidden"
+    );
+
+
+    if (!DOM.questionsContainer) {
+
+        return;
+
+    }
+
 
     DOM.questionsContainer.innerHTML =
 
         questions
-
             .map(
-
                 (question, index) => {
 
                     const text =
-
                         typeof question ===
                         "string"
 
@@ -1953,9 +1729,7 @@ function renderQuestions() {
                             : question?.question ||
                               "";
 
-
                     const answer =
-
                         typeof question ===
                         "string"
 
@@ -1964,15 +1738,12 @@ function renderQuestions() {
                             : question?.answer ||
                               "";
 
-
                     return `
 
                         <div
                             class="question-card"
                             data-index="${index}"
                         >
-
-                            <!-- QUESTION -->
 
                             <div
                                 class="question-header"
@@ -1987,7 +1758,6 @@ function renderQuestions() {
 
                                 </span>
 
-
                                 <div
                                     class="question-text"
                                     dir="ltr"
@@ -2000,8 +1770,6 @@ function renderQuestions() {
                             </div>
 
 
-                            <!-- USER ANSWER -->
-
                             <div
                                 class="user-answer-section"
                                 dir="ltr"
@@ -2013,35 +1781,21 @@ function renderQuestions() {
 
                                 </label>
 
-
                                 <textarea
-
                                     class="user-answer-input"
-
                                     placeholder="Write your answer here..."
-
                                     rows="3"
-
-                                    spellcheck="true"
-
                                 ></textarea>
 
                             </div>
 
-
-                            <!-- CORRECT ANSWER -->
 
                             <div
                                 class="question-answer hidden"
                                 dir="ltr"
                             >
 
-                               
-                                <div>
-
-                                    ${escapeHTML(answer)}
-
-                                </div>
+                                ${escapeHTML(answer)}
 
                             </div>
 
@@ -2050,30 +1804,19 @@ function renderQuestions() {
                     `;
 
                 }
-
             )
-
             .join("");
 
 
-    /* =====================================================
-       CLICK ON QUESTION — SHOW CORRECT ANSWER
-    ===================================================== */
-
     DOM.questionsContainer
-
         .querySelectorAll(
             ".question-header"
         )
-
         .forEach(
-
             header => {
 
                 header.addEventListener(
-
                     "click",
-
                     () => {
 
                         const card =
@@ -2081,12 +1824,10 @@ function renderQuestions() {
                                 ".question-card"
                             );
 
-
                         const answer =
                             card?.querySelector(
                                 ".question-answer"
                             );
-
 
                         if (!answer) {
 
@@ -2094,215 +1835,61 @@ function renderQuestions() {
 
                         }
 
-
-                        const isHidden =
-
+                        const hidden =
                             answer.classList.contains(
                                 "hidden"
                             );
 
-
                         answer.classList.toggle(
-
                             "hidden",
-
-                            !isHidden
-
+                            !hidden
                         );
-
 
                         header.setAttribute(
-
                             "aria-expanded",
-
-                            String(isHidden)
-
-                        );
-
-
-                        card.classList.toggle(
-
-                            "has-answer",
-
-                            isHidden
-
+                            String(hidden)
                         );
 
                     }
-
-                );
-
-
-                /* دعم لوحة المفاتيح */
-
-                header.addEventListener(
-
-                    "keydown",
-
-                    event => {
-
-                        if (
-
-                            event.key === "Enter" ||
-
-                            event.key === " "
-
-                        ) {
-
-                            event.preventDefault();
-
-                            header.click();
-
-                        }
-
-                    }
-
                 );
 
             }
-
         );
 
 }
 
 
-
-
-
 /* =========================================================
-   SWIPE NAVIGATION — MOBILE
-========================================================= */
-
-let touchStartX = 0;
-let touchStartY = 0;
-
-
-document.addEventListener("touchstart", (event) => {
-
-    if (
-        !DOM.readerModal ||
-        DOM.readerModal.classList.contains("hidden")
-    ) {
-        return;
-    }
-
-
-    const touch =
-        event.changedTouches[0];
-
-
-    touchStartX =
-        touch.clientX;
-
-
-    touchStartY =
-        touch.clientY;
-
-}, { passive: true });
-
-
-document.addEventListener("touchend", (event) => {
-
-    if (
-        !DOM.readerModal ||
-        DOM.readerModal.classList.contains("hidden")
-    ) {
-        return;
-    }
-
-
-    const touch =
-        event.changedTouches[0];
-
-
-    const touchEndX =
-        touch.clientX;
-
-
-    const touchEndY =
-        touch.clientY;
-
-
-    const deltaX =
-        touchEndX - touchStartX;
-
-
-    const deltaY =
-        touchEndY - touchStartY;
-
-
-    /* تجاهل السحب العمودي */
-
-    if (
-        Math.abs(deltaY) >
-        Math.abs(deltaX)
-    ) {
-        return;
-    }
-
-
-    /* الحد الأدنى للسحب */
-
-    const SWIPE_THRESHOLD = 60;
-
-
-    if (
-        Math.abs(deltaX) <
-        SWIPE_THRESHOLD
-    ) {
-        return;
-    }
-
-
-    /* =========================================
-       من اليمين → اليسار
-       الدرس السابق
-    ========================================= */
-
-    if (deltaX < 0) {
-
-        previousLesson();
-
-    }
-
-
-    /* =========================================
-       من اليسار → اليمين
-       الدرس التالي
-    ========================================= */
-
-    else {
-
-        nextLesson();
-
-    }
-
-}, { passive: true });
-
-
-/* =========================================================
-   READER NAVIGATION
+   NAVIGATION
 ========================================================= */
 
 function updateReaderNavigation(
-    totalLessons
+    total
 ) {
 
-    DOM.currentPosition.textContent =
+    if (DOM.currentPosition) {
 
-        `${AppState.currentLessonIndex + 1} / ${totalLessons}`;
+        DOM.currentPosition.textContent =
+            `${AppState.currentLessonIndex + 1} / ${total}`;
 
-
-    DOM.prevLessonBtn.disabled =
-
-        AppState.currentLessonIndex <= 0;
+    }
 
 
-    DOM.nextLessonBtn.disabled =
+    if (DOM.prevLessonBtn) {
 
-        AppState.currentLessonIndex >=
+        DOM.prevLessonBtn.disabled =
+            AppState.currentLessonIndex <= 0;
 
-        totalLessons - 1;
+    }
+
+
+    if (DOM.nextLessonBtn) {
+
+        DOM.nextLessonBtn.disabled =
+            AppState.currentLessonIndex >=
+            total - 1;
+
+    }
 
 }
 
@@ -2310,46 +1897,29 @@ function updateReaderNavigation(
 function previousLesson() {
 
     if (
-
         AppState.currentLessonIndex <= 0
-
     ) {
 
         return;
 
     }
 
-
     AppState.currentLessonIndex--;
-
 
     const lessons =
         getCurrentChapterLessons();
 
-
     AppState.currentLesson =
-
         lessons[
-
             AppState.currentLessonIndex
-
         ];
 
-
     saveLastLesson(
-
         getLessonId(
-
             AppState.currentLesson,
-
             AppState.currentLessonIndex
-
-        ),
-
-        AppState.currentChapter
-
+        )
     );
-
 
     renderReader();
 
@@ -2361,70 +1931,43 @@ function nextLesson() {
     const lessons =
         getCurrentChapterLessons();
 
-
     if (
-
         AppState.currentLessonIndex >=
-
         lessons.length - 1
-
     ) {
 
         return;
 
     }
 
-
     AppState.currentLessonIndex++;
 
-
     AppState.currentLesson =
-
         lessons[
-
             AppState.currentLessonIndex
-
         ];
 
-
     saveLastLesson(
-
         getLessonId(
-
             AppState.currentLesson,
-
             AppState.currentLessonIndex
-
-        ),
-
-        AppState.currentChapter
-
+        )
     );
-
 
     renderReader();
 
 }
 
 
-/* =========================================================
-   CLOSE READER
-========================================================= */
-
 function closeReader() {
 
-    stopSpeaking();
-
+    stopSpeech();
 
     DOM.readerModal?.classList.add(
-
         "hidden"
-
     );
 
-
     document.body.style.overflow =
-
         "";
 
 }
@@ -2439,13 +1982,7 @@ function isFavorite(
 ) {
 
     return AppState.favorites.includes(
-
-        String(
-
-            lessonId
-
-        )
-
+        String(lessonId)
     );
 
 }
@@ -2458,54 +1995,37 @@ function toggleFavorite(
     const id =
         String(lessonId);
 
-
     if (
         isFavorite(id)
     ) {
 
         AppState.favorites =
-
             AppState.favorites.filter(
-
                 item =>
-
                     item !== id
-
             );
 
-
         showToast(
-
-            "Removed from favorites"
-
+            "تمت إزالة النص من المفضلة"
         );
 
     } else {
 
         AppState.favorites.push(
-
             id
-
         );
 
-
         showToast(
-
-            "Added to favorites ⭐"
-
+            "تمت إضافة النص إلى المفضلة"
         );
 
     }
 
-
     saveStorage();
-
 
     updateFavoritesButton();
 
-
     updateReaderFavoriteButton();
-
 
     renderLessons();
 
@@ -2522,17 +2042,11 @@ function toggleCurrentFavorite() {
 
     }
 
-
     toggleFavorite(
-
         getLessonId(
-
             AppState.currentLesson,
-
             AppState.currentLessonIndex
-
         )
-
     );
 
 }
@@ -2541,6 +2055,7 @@ function toggleCurrentFavorite() {
 function updateReaderFavoriteButton() {
 
     if (
+        !DOM.readerFavoriteBtn ||
         !AppState.currentLesson
     ) {
 
@@ -2548,50 +2063,22 @@ function updateReaderFavoriteButton() {
 
     }
 
-
     const favorite =
-
         isFavorite(
-
             getLessonId(
-
                 AppState.currentLesson,
-
                 AppState.currentLessonIndex
-
             )
-
         );
 
-
     DOM.readerFavoriteBtn.textContent =
-
         favorite
-
-            ? "⭐"
-
+            ? "★"
             : "☆";
 
-
     DOM.readerFavoriteBtn.setAttribute(
-
         "aria-pressed",
-
         String(favorite)
-
-    );
-
-
-    DOM.readerFavoriteBtn.setAttribute(
-
-        "aria-label",
-
-        favorite
-
-            ? "Remove from favorites"
-
-            : "Add lesson to favorites"
-
     );
 
 }
@@ -2600,12 +2087,19 @@ function updateReaderFavoriteButton() {
 function toggleFavorites() {
 
     AppState.showFavoritesOnly =
-
         !AppState.showFavoritesOnly;
 
+    AppState.searchQuery =
+        "";
+
+    if (DOM.searchInput) {
+
+        DOM.searchInput.value =
+            "";
+
+    }
 
     updateFavoritesButton();
-
 
     renderLessons();
 
@@ -2614,33 +2108,22 @@ function toggleFavorites() {
 
 function updateFavoritesButton() {
 
-    const active =
+    if (!DOM.favoritesBtn) {
 
-        AppState.showFavoritesOnly;
+        return;
 
+    }
 
     DOM.favoritesBtn.textContent =
-
-        active
-
+        AppState.showFavoritesOnly
             ? "⭐"
-
             : "☆";
-
-
-    DOM.favoritesBtn.setAttribute(
-
-        "aria-pressed",
-
-        String(active)
-
-    );
 
 }
 
 
 /* =========================================================
-   COMPLETED LESSONS
+   COMPLETED
 ========================================================= */
 
 function isCompleted(
@@ -2648,9 +2131,7 @@ function isCompleted(
 ) {
 
     return AppState.completed.includes(
-
         String(lessonId)
-
     );
 
 }
@@ -2663,24 +2144,17 @@ function markAsCompleted(
     const id =
         String(lessonId);
 
-
     if (
-        isCompleted(id)
+        !isCompleted(id)
     ) {
 
-        return;
+        AppState.completed.push(
+            id
+        );
+
+        saveStorage();
 
     }
-
-
-    AppState.completed.push(
-
-        id
-
-    );
-
-
-    saveStorage();
 
 }
 
@@ -2691,40 +2165,21 @@ function markAsCompleted(
 
 function toggleSearch() {
 
+    if (!DOM.searchPanel) {
+
+        return;
+
+    }
+
     const hidden =
-
-        DOM.searchPanel
-
-            .classList
-
-            .contains(
-
-                "hidden"
-
-            );
-
-
-    DOM.searchPanel
-
-        .classList
-
-        .toggle(
-
-            "hidden",
-
-            !hidden
-
+        DOM.searchPanel.classList.contains(
+            "hidden"
         );
 
-
-    DOM.searchBtn?.setAttribute(
-
-        "aria-expanded",
-
-        String(hidden)
-
+    DOM.searchPanel.classList.toggle(
+        "hidden",
+        !hidden
     );
-
 
     if (hidden) {
 
@@ -2740,17 +2195,12 @@ function handleSearch(
 ) {
 
     AppState.searchQuery =
-
         event.target.value;
 
-
     AppState.showFavoritesOnly =
-
         false;
 
-
     updateFavoritesButton();
-
 
     renderLessons();
 
@@ -2759,15 +2209,15 @@ function handleSearch(
 
 function clearSearch() {
 
-    DOM.searchInput.value =
+    if (DOM.searchInput) {
 
-        "";
+        DOM.searchInput.value =
+            "";
 
+    }
 
     AppState.searchQuery =
-
         "";
-
 
     renderLessons();
 
@@ -2777,53 +2227,40 @@ function clearSearch() {
 /* =========================================================
    TEXT TO SPEECH
 ========================================================= */
-/* =========================================================
-   TEXT TO SPEECH
-========================================================= */
 
 function speakCurrentLesson() {
 
-    if (!AppState.currentLesson) {
+    if (
+        !AppState.currentLesson
+    ) {
+
         return;
+
     }
-if (
-    !window.speechSynthesis ||
-    typeof window.speechSynthesis.speak !== "function"
-) {
-    showToast(
-        "Text-to-Speech is not available on this device."
-    );
-    return;
-}
 
-
-
-const text =
-        AppState.currentLesson.content || "";
-
-    if (!text.trim()) {
+    if (
+        !("speechSynthesis" in window)
+    ) {
 
         showToast(
-            "No text available."
+            "القراءة الصوتية غير متاحة."
         );
 
         return;
+
     }
 
-    /*
-       إيقاف القراءة السابقة فقط
-       بدون إخفاء سرعة القراءة
-    */
-    window.speechSynthesis.cancel();
+    stopSpeech();
 
-    /*
-       إظهار التحكم في سرعة القراءة
-    */
-    if (speechRateControl) {
+    const text =
+        AppState.currentLesson.content ||
+        "";
 
-        speechRateControl.classList.remove(
-            "hidden"
-        );
+    if (
+        !text.trim()
+    ) {
+
+        return;
 
     }
 
@@ -2837,46 +2274,36 @@ const text =
 
     utterance.rate =
         Number(
-            speechRate?.value || 1
+            speechRate?.value ||
+            1
         );
 
     utterance.pitch =
         1;
 
-    utterance.onstart = () => {
+    utterance.onstart =
+        () => {
 
-        AppState.isSpeaking =
-            true;
+            AppState.isSpeaking =
+                true;
 
-        if (DOM.speakBtn) {
+        };
 
-            DOM.speakBtn.innerHTML = `
+    utterance.onend =
+        () => {
 
-                <span class="speak-icon">
-                    🔊
-                </span>
+            AppState.isSpeaking =
+                false;
 
-                <span>
-                    Speaking...
-                </span>
+        };
 
-            `;
+    utterance.onerror =
+        () => {
 
-        }
+            AppState.isSpeaking =
+                false;
 
-    };
-
-    utterance.onend = () => {
-
-        resetSpeechButton();
-
-    };
-
-    utterance.onerror = () => {
-
-        resetSpeechButton();
-
-    };
+        };
 
     window.speechSynthesis.speak(
         utterance
@@ -2885,11 +2312,7 @@ const text =
 }
 
 
-/* =========================================================
-   STOP SPEAKING
-========================================================= */
-
-function stopSpeaking() {
+function stopSpeech() {
 
     if (
         "speechSynthesis" in window
@@ -2899,69 +2322,86 @@ function stopSpeaking() {
 
     }
 
-    /*
-       لا نخفي speechRateControl هنا
-       حتى تبقى سرعة القراءة ظاهرة
-    */
-
-    resetSpeechButton();
+    AppState.isSpeaking =
+        false;
 
 }
 
 
-/* =========================================================
-   RESET SPEECH BUTTON
-========================================================= */
+function handleAudioButton() {
 
-function resetSpeechButton() {
+    if (
+        "speechSynthesis" in window
+    ) {
 
-    AppState.isSpeaking =
-        false;
+        speakCurrentLesson();
 
-    if (DOM.speakBtn) {
+    } else {
 
-        DOM.speakBtn.innerHTML = `
-
-            <span class="speak-icon">
-                🔊
-            </span>
-
-            <span>
-                القراءة 
-            </span>
-
-        `;
+        openCurrentLessonOnWeb();
 
     }
 
 }
 
+
 /* =========================================================
-   SIDE MENU
+   WEB
+========================================================= */
+
+function openCurrentLessonOnWeb() {
+
+    const baseURL =
+        "https://alaska-sahari.github.io/English-4MS-/";
+
+    if (
+        !AppState.currentLesson
+    ) {
+
+        window.open(
+            baseURL,
+            "_blank"
+        );
+
+        return;
+
+    }
+
+    const lessonId =
+        getLessonId(
+            AppState.currentLesson,
+            AppState.currentLessonIndex
+        );
+
+    const url =
+        baseURL +
+        `?chapter=${encodeURIComponent(
+            AppState.currentChapter
+        )}` +
+        `&lesson=${encodeURIComponent(
+            lessonId
+        )}`;
+
+    window.open(
+        url,
+        "_blank"
+    );
+
+}
+
+
+/* =========================================================
+   MENU
 ========================================================= */
 
 function openMenu() {
 
     DOM.sideMenu?.classList.add(
-
         "open"
-
     );
-
 
     DOM.menuOverlay?.classList.add(
-
         "open"
-
-    );
-
-
-    DOM.menuBtn?.setAttribute(
-
-        "aria-expanded",
-
-        "true"
-
     );
 
 }
@@ -2970,32 +2410,18 @@ function openMenu() {
 function closeMenu() {
 
     DOM.sideMenu?.classList.remove(
-
         "open"
-
     );
-
 
     DOM.menuOverlay?.classList.remove(
-
         "open"
-
-    );
-
-
-    DOM.menuBtn?.setAttribute(
-
-        "aria-expanded",
-
-        "false"
-
     );
 
 }
 
 
 /* =========================================================
-   SIDE NAVIGATION
+   SIDE MENU
 ========================================================= */
 
 function handleSideNavigation(
@@ -3005,55 +2431,8 @@ function handleSideNavigation(
     const button =
         event.currentTarget;
 
-
     const view =
         button.dataset.view;
-
-
-    document
-
-        .querySelectorAll(
-
-            ".side-nav-item"
-
-        )
-
-        .forEach(
-
-            item => {
-
-                item.classList.remove(
-
-                    "active"
-
-                );
-
-
-                item.removeAttribute(
-
-                    "aria-current"
-
-                );
-
-            }
-
-        );
-
-
-    button.classList.add(
-
-        "active"
-
-    );
-
-
-    button.setAttribute(
-
-        "aria-current",
-
-        "page"
-
-    );
 
 
     if (
@@ -3061,37 +2440,19 @@ function handleSideNavigation(
     ) {
 
         AppState.showFavoritesOnly =
-
             true;
 
-    }
-
-
-    if (
-        view === "lessons"
-    ) {
+    } else {
 
         AppState.showFavoritesOnly =
-
             false;
-
-    }
-
-
-    if (
-        view === "progress"
-    ) {
-
-        showProgressInfo();
 
     }
 
 
     updateFavoritesButton();
 
-
     renderLessons();
-
 
     closeMenu();
 
@@ -3099,243 +2460,171 @@ function handleSideNavigation(
 
 
 /* =========================================================
-   PROGRESS
-========================================================= */
-
-function showProgressInfo() {
-
-    const total =
-        getTotalLessons();
-
-
-    const completed =
-
-        AppState.completed.length;
-
-
-    const percentage =
-
-        total > 0
-
-            ? Math.round(
-
-                (
-
-                    completed /
-
-                    total
-
-                ) * 100
-
-            )
-
-            : 0;
-
-
-    showToast(
-
-        `Completed: ${completed} / ${total} (${percentage}%)`
-
-    );
-
-}
-
-
-function getTotalLessons() {
-
-    return CONFIG.CHAPTERS.reduce(
-
-        (total, chapter) => {
-
-            const data =
-
-                AppState.data[chapter];
-
-
-            return (
-
-                total +
-
-                (
-
-                    data?.lessons ||
-
-                    []
-
-                ).length
-
-            );
-
-        },
-
-        0
-
-    );
-
-}
-
-
-/* =========================================================
-   CONTINUE LAST LESSON
+   CONTINUE
 ========================================================= */
 
 function continueLastLesson() {
 
     const lastLessonId =
-
         localStorage.getItem(
-
             CONFIG.STORAGE_KEYS.LAST_LESSON
-
         );
-
 
     if (
         !lastLessonId
     ) {
 
         showToast(
-
-            "No previous lesson found."
-
+            "لا يوجد نص سابق للمتابعة."
         );
 
-
         closeMenu();
-
 
         return;
 
     }
 
 
+    let foundChapter =
+        null;
+
+    let foundIndex =
+        -1;
+
+
     for (
-
         const chapter
-
         of CONFIG.CHAPTERS
-
     ) {
 
         const lessons =
-
-            AppState.data[chapter]
-
-                ?.lessons ||
-
-            [];
-
+            AppState.data[
+                chapter
+            ]?.lessons || [];
 
         const index =
-
             lessons.findIndex(
-
-                (lesson, lessonIndex) =>
-
-                    getLessonId(
-
+                (
+                    lesson,
+                    lessonIndex
+                ) =>
+                    getLessonIdForChapter(
                         lesson,
-
-                        lessonIndex
-
+                        lessonIndex,
+                        chapter
                     ) ===
-
-                    String(
-
-                        lastLessonId
-
-                    )
-
+                    String(lastLessonId)
             );
-
 
         if (
             index !== -1
         ) {
 
-            AppState.currentChapter =
-
+            foundChapter =
                 chapter;
 
-
-            AppState.currentLessonIndex =
-
+            foundIndex =
                 index;
 
-
-            AppState.currentLesson =
-
-                lessons[index];
-
-
-            AppState.showFavoritesOnly =
-
-                false;
-
-
-            saveStorage();
-
-
-            updateActiveChapter();
-
-
-            renderLessons();
-
-
-            renderReader();
-
-
-            DOM.readerModal?.classList.remove(
-
-                "hidden"
-
-            );
-
-
-            document.body.style.overflow =
-
-                "hidden";
-
-
-            closeMenu();
-
-
-            return;
+            break;
 
         }
 
     }
 
 
-    showToast(
+    if (
+        foundChapter === null
+    ) {
 
-        "The previous lesson could not be found."
+        showToast(
+            "تعذر العثور على النص السابق."
+        );
 
+        closeMenu();
+
+        return;
+
+    }
+
+
+    AppState.currentChapter =
+        foundChapter;
+
+    AppState.currentLessonIndex =
+        foundIndex;
+
+    AppState.currentLesson =
+        AppState.data[
+            foundChapter
+        ].lessons[
+            foundIndex
+        ];
+
+    AppState.showFavoritesOnly =
+        false;
+
+    saveStorage();
+
+    updateActiveChapter();
+
+    renderLessons();
+
+    renderReader();
+
+    DOM.readerModal?.classList.remove(
+        "hidden"
     );
 
+    document.body.style.overflow =
+        "hidden";
 
     closeMenu();
 
 }
 
 
-/* =========================================================
-   RESET PROGRESS
-========================================================= */
+function getLessonIdForChapter(
+    lesson,
+    index,
+    chapter
+) {
 
-function resetProgress() {
-
-    openResetModal();
+    return String(
+        `${chapter}_${
+            lesson?.id ??
+            index
+        }`
+    );
 
 }
 
 
-function openResetModal() {
+function saveLastLesson(
+    lessonId
+) {
+
+    localStorage.setItem(
+        CONFIG.STORAGE_KEYS.LAST_LESSON,
+        String(lessonId)
+    );
+
+    localStorage.setItem(
+        CONFIG.STORAGE_KEYS.CHAPTER,
+        AppState.currentChapter
+    );
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetProgress() {
 
     resetModal?.classList.remove(
-
         "hidden"
-
     );
 
 }
@@ -3344,9 +2633,7 @@ function openResetModal() {
 function closeResetModal() {
 
     resetModal?.classList.add(
-
         "hidden"
-
     );
 
 }
@@ -3355,163 +2642,104 @@ function closeResetModal() {
 function confirmReset() {
 
     AppState.completed =
-
         [];
 
-
     localStorage.removeItem(
-
         CONFIG.STORAGE_KEYS.COMPLETED
-
     );
-
 
     saveStorage();
 
-
     renderLessons();
-
 
     closeResetModal();
 
-
     showToast(
-
-        "Learning progress has been reset."
-
+        "تمت إعادة ضبط التقدم."
     );
 
 }
 
 
 /* =========================================================
-   KEYBOARD
+   THEME
 ========================================================= */
 
-function handleKeyboard(
-    event
-) {
+function loadTheme() {
 
-    if (
-        event.key ===
-        "Escape"
-    ) {
+    const theme =
+        localStorage.getItem(
+            CONFIG.STORAGE_KEYS.THEME
+        ) ||
+        "light";
 
-        if (
+    document.documentElement.dataset.theme =
+        theme;
 
-            DOM.readerModal &&
-
-            !DOM.readerModal
-
-                .classList
-
-                .contains(
-
-                    "hidden"
-
-                )
-
-        ) {
-
-            closeReader();
+}
 
 
-            return;
+function toggleTheme() {
 
-        }
+    const current =
+        document.documentElement.dataset.theme;
 
+    const next =
+        current === "dark"
+            ? "light"
+            : "dark";
 
-        if (
+    document.documentElement.dataset.theme =
+        next;
 
-            resetModal &&
+    localStorage.setItem(
+        CONFIG.STORAGE_KEYS.THEME,
+        next
+    );
 
-            !resetModal
+    updateThemeButton();
 
-                .classList
-
-                .contains(
-
-                    "hidden"
-
-                )
-
-        ) {
-
-            closeResetModal();
-
-
-            return;
-
-        }
+}
 
 
-        closeMenu();
+function updateThemeButton() {
 
-    }
-
-
-    if (
-
-        DOM.readerModal?.classList.contains(
-
-            "hidden"
-
-        )
-
-    ) {
+    if (!themeToggleBtn) {
 
         return;
 
     }
 
+    const theme =
+        document.documentElement.dataset.theme;
 
-    if (
-        event.key ===
-        "ArrowLeft"
-    ) {
+    const icon =
+        themeToggleBtn.querySelector(
+            "span:first-child"
+        );
 
-        previousLesson();
+    const text =
+        themeToggleBtn.querySelector(
+            "span:last-child"
+        );
+
+    if (icon) {
+
+        icon.textContent =
+            theme === "dark"
+                ? "☀️"
+                : "🌙";
 
     }
 
+    if (text) {
 
-    if (
-        event.key ===
-        "ArrowRight"
-    ) {
-
-        nextLesson();
+        text.textContent =
+            theme === "dark"
+                ? "الوضع النهاري"
+                : "الوضع الليلي";
 
     }
-
-}
-
-
-/* =========================================================
-   LAST LESSON
-========================================================= */
-
-function saveLastLesson(
-    lessonId,
-    chapter
-) {
-
-    localStorage.setItem(
-
-        CONFIG.STORAGE_KEYS.LAST_LESSON,
-
-        String(lessonId)
-
-    );
-
-
-    localStorage.setItem(
-
-        CONFIG.STORAGE_KEYS.CHAPTER,
-
-        chapter
-
-    );
 
 }
 
@@ -3527,23 +2755,19 @@ function getChapterTitle(
     const titles = {
 
         chapter1:
-            "الفصل الأول",
+            "نصوص الفصل الأول",
 
         chapter2:
-            "الفصل الثاني",
+            "نصوص الفصل الثاني",
 
         chapter3:
-            "الفصل الثالث"
+            "نصوص الفصل الثالث"
 
     };
 
-
     return (
-
         titles[chapter] ||
-
-        "English+"
-
+        "النصوص"
     );
 
 }
@@ -3560,23 +2784,19 @@ function getChapterDescription(
     const descriptions = {
 
         chapter1:
-            "Lessons of the first chapter",
+            "نصوص إنجليزية مختارة بعناية لتلاميذ السنة الرابعة متوسط للتحضير لشهادة التعليم المتوسط وتطوير مهارات القراءة والفهم والمفردات.",
 
         chapter2:
-            "Lessons of the second chapter",
+            "نصوص إنجليزية مختارة للفصل الثاني لتطوير مهارات القراءة والفهم والمفردات.",
 
         chapter3:
-            "Lessons of the third chapter"
+            "نصوص إنجليزية مختارة للفصل الثالث لتطوير مهارات القراءة والفهم والمفردات."
 
     };
 
-
     return (
-
         descriptions[chapter] ||
-
-        "Learn English"
-
+        ""
     );
 
 }
@@ -3595,11 +2815,85 @@ function showToast(
 ) {
 
     if (
-
         !DOM.toast ||
-
         !DOM.toastMessage
+    ) {
 
+        return;
+
+    }
+
+    DOM.toastMessage.textContent =
+        message;
+
+    DOM.toast.classList.add(
+        "show"
+    );
+
+    clearTimeout(
+        toastTimer
+    );
+
+    toastTimer =
+        setTimeout(
+            () => {
+
+                DOM.toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2500
+        );
+
+}
+
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+function handleKeyboard(
+    event
+) {
+
+    if (
+        event.key === "Escape"
+    ) {
+
+        if (
+            DOM.readerModal &&
+            !DOM.readerModal.classList.contains(
+                "hidden"
+            )
+        ) {
+
+            closeReader();
+            return;
+
+        }
+
+        if (
+            resetModal &&
+            !resetModal.classList.contains(
+                "hidden"
+            )
+        ) {
+
+            closeResetModal();
+            return;
+
+        }
+
+        closeMenu();
+
+    }
+
+
+    if (
+        DOM.readerModal?.classList.contains(
+            "hidden"
+        )
     ) {
 
         return;
@@ -3607,235 +2901,130 @@ function showToast(
     }
 
 
-    DOM.toastMessage.textContent =
+    if (
+        event.key === "ArrowLeft"
+    ) {
 
-        message;
+        previousLesson();
 
-
-    DOM.toast.classList.add(
-
-        "show"
-
-    );
+    }
 
 
-    clearTimeout(
+    if (
+        event.key === "ArrowRight"
+    ) {
 
-        toastTimer
+        nextLesson();
 
-    );
-
-
-    toastTimer =
-
-        setTimeout(
-
-            () => {
-
-                DOM.toast.classList.remove(
-
-                    "show"
-
-                );
-
-            },
-
-            2500
-
-        );
+    }
 
 }
 
 
 /* =========================================================
-   DATA ERROR
+   SWIPE
 ========================================================= */
 
-function showDataError() {
+let touchStartX =
+    0;
 
-    if (!DOM.lessonsList) {
+let touchStartY =
+    0;
 
-        return;
 
+document.addEventListener(
+    "touchstart",
+    event => {
+
+        if (
+            DOM.readerModal?.classList.contains(
+                "hidden"
+            )
+        ) {
+
+            return;
+
+        }
+
+        const touch =
+            event.changedTouches[0];
+
+        touchStartX =
+            touch.clientX;
+
+        touchStartY =
+            touch.clientY;
+
+    },
+    {
+        passive: true
     }
+);
 
 
-    DOM.lessonsList.innerHTML =
+document.addEventListener(
+    "touchend",
+    event => {
 
-        `
+        if (
+            DOM.readerModal?.classList.contains(
+                "hidden"
+            )
+        ) {
 
-            <div class="empty-state">
+            return;
 
-                <div class="empty-icon">
+        }
 
-                    ⚠️
+        const touch =
+            event.changedTouches[0];
 
-                </div>
+        const deltaX =
+            touch.clientX -
+            touchStartX;
 
+        const deltaY =
+            touch.clientY -
+            touchStartY;
 
-                <h3>
+        if (
+            Math.abs(deltaY) >
+            Math.abs(deltaX)
+        ) {
 
-                    Unable to load lessons
+            return;
 
-                </h3>
+        }
 
+        if (
+            Math.abs(deltaX) < 60
+        ) {
 
-                <p>
+            return;
 
-                    Please make sure that
+        }
 
-                    <strong>
+        if (
+            deltaX < 0
+        ) {
 
-                        chapter1.json,
-                        chapter2.json,
-                        chapter3.json
+            previousLesson();
 
-                    </strong>
+        } else {
 
-                    are available in the
+            nextLesson();
 
-                    <strong>
+        }
 
-                        data
-
-                    </strong>
-
-                    folder.
-
-                </p>
-
-            </div>
-
-        `;
-
-}
+    },
+    {
+        passive: true
+    }
+);
 
 
 /* =========================================================
-   THEME
-========================================================= */
-
-const savedTheme =
-
-    localStorage.getItem(
-
-        "englishPlusTheme"
-
-    );
-
-
-if (savedTheme) {
-
-    document.documentElement.dataset.theme =
-
-        savedTheme;
-
-} else {
-
-    document.documentElement.dataset.theme =
-
-        "light";
-
-}
-
-
-function toggleTheme() {
-
-    const currentTheme =
-
-        document.documentElement.dataset.theme;
-
-
-    const newTheme =
-
-        currentTheme === "dark"
-
-            ? "light"
-
-            : "dark";
-
-
-    document.documentElement.dataset.theme =
-
-        newTheme;
-
-
-    localStorage.setItem(
-
-        "englishPlusTheme",
-
-        newTheme
-
-    );
-
-
-    updateThemeButton();
-
-}
-
-
-function updateThemeButton() {
-
-    if (!themeToggleBtn) {
-
-        return;
-
-    }
-
-
-    const theme =
-
-        document.documentElement.dataset.theme;
-
-
-    const icon =
-
-        themeToggleBtn.querySelector(
-
-            "span:first-child"
-
-        );
-
-
-    const text =
-
-        themeToggleBtn.querySelector(
-
-            "span:last-child"
-
-        );
-
-
-    if (icon) {
-
-        icon.textContent =
-
-            theme === "dark"
-
-                ? "☀️"
-
-                : "🌙";
-
-    }
-
-
-    if (text) {
-
-        text.textContent =
-
-            theme === "dark"
-
-                ? "Light Mode"
-
-                : "Dark Mode";
-
-    }
-
-}
-
-
-/* =========================================================
-   SECURITY HELPERS
+   HELPERS
 ========================================================= */
 
 function escapeHTML(
@@ -3845,43 +3034,28 @@ function escapeHTML(
     return String(value)
 
         .replace(
-
             /&/g,
-
             "&amp;"
-
         )
 
         .replace(
-
             /</g,
-
             "&lt;"
-
         )
 
         .replace(
-
             />/g,
-
             "&gt;"
-
         )
 
         .replace(
-
             /"/g,
-
             "&quot;"
-
         )
 
         .replace(
-
             /'/g,
-
             "&#039;"
-
         );
 
 }
@@ -3892,148 +3066,12 @@ function escapeAttribute(
 ) {
 
     return escapeHTML(
-
         value
-
     );
 
 }
 
-
-/* =========================================================
-   END
-========================================================= */
 
 console.log(
-
-    "English+ 4MS application loaded successfully."
-
+    "English 4MS — Chapters 1, 2 and 3 loaded."
 );
-
-
-
-function openLessonFromURL() {
-
-    const params =
-        new URLSearchParams(
-            window.location.search
-        );
-
-    const chapter =
-        params.get("chapter");
-
-    const lessonId =
-        params.get("lesson");
-
-
-    if (!chapter || !lessonId) {
-        return;
-    }
-
-
-    if (
-        !CONFIG.CHAPTERS.includes(
-            chapter
-        )
-    ) {
-        return;
-    }
-
-
-    const lessons =
-        AppState.data[chapter]?.lessons || [];
-
-
-    const index =
-        lessons.findIndex(
-
-            (lesson, lessonIndex) =>
-
-                getLessonId(
-                    lesson,
-                    lessonIndex
-                ) === String(lessonId)
-
-        );
-
-
-    if (index === -1) {
-
-        console.warn(
-            "Lesson from URL not found:",
-            chapter,
-            lessonId
-        );
-
-        return;
-    }
-
-
-    /* تحديد الفصل */
-
-    AppState.currentChapter =
-        chapter;
-
-
-    /* تحديد الدرس */
-
-    AppState.currentLessonIndex =
-        index;
-
-
-    AppState.currentLesson =
-        lessons[index];
-
-
-    /* إلغاء البحث والمفضلة */
-
-    AppState.searchQuery =
-        "";
-
-    AppState.showFavoritesOnly =
-        false;
-
-
-    /* حفظ آخر درس */
-
-    saveStorage();
-
-    saveLastLesson(
-        getLessonId(
-            AppState.currentLesson,
-            index
-        ),
-        chapter
-    );
-
-
-    /* تحديث الواجهة */
-
-    updateActiveChapter();
-
-    renderLessons();
-
-
-    /* فتح Reader */
-
-    renderReader();
-
-
-    DOM.readerModal?.classList.remove(
-        "hidden"
-    );
-
-
-    document.body.style.overflow =
-        "hidden";
-
-
-    /* تنظيف الرابط */
-
-    window.history.replaceState(
-        {},
-        document.title,
-        window.location.pathname
-    );
-
-}

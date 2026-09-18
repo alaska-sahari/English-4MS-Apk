@@ -17,11 +17,16 @@
 
     <meta
         name="description"
-        content="English 4MS تطبيق تعلم اللغة الإنجليزية لتلاميذ السنة الرابعة متوسط."
+        content="English 4MS — نصوص إنجليزية مختارة بعناية لتلاميذ السنة الرابعة متوسط للتحضير لشهادة التعليم المتوسط وتطوير مهارات القراءة والفهم والمفردات."
+    >
+
+    <meta
+        name="keywords"
+        content="English 4MS, 4MS English, السنة الرابعة متوسط, شهادة التعليم المتوسط, BEM, English Algeria, تعلم الإنجليزية"
     >
 
     <title>
-        English 4MS| السنة الرابعة متوسط
+        English 4MS | نصوص السنة الرابعة متوسط
     </title>
 
     <link
@@ -46,6 +51,7 @@
 
     <div class="header-left">
 
+
         <button
             id="menuBtn"
             class="icon-btn"
@@ -59,6 +65,7 @@
 
 
         <div class="app-brand">
+
 
             <div
                 class="app-logo"
@@ -80,18 +87,23 @@
 
             </div>
 
+
         </div>
+
 
     </div>
 
 
     <div class="header-actions">
 
+
+        <!-- SEARCH -->
+
         <button
             id="searchBtn"
             class="icon-btn"
             type="button"
-            aria-label="البحث عن الدروس"
+            aria-label="البحث عن النصوص"
             aria-controls="searchPanel"
             aria-expanded="false"
         >
@@ -99,30 +111,64 @@
         </button>
 
 
-        <button
-            id="favoritesBtn"
-            class="icon-btn"
-            type="button"
-            aria-label="عرض الدروس المفضلة"
-            aria-pressed="false"
-        >
-            ☆
-        </button>
+        <!-- FAVORITES -->
 
+        <button
+    id="favoritesBtn"
+    class="icon-btn favorite-header-btn"
+    type="button"
+    aria-label="عرض النصوص المفضلة"
+    aria-pressed="false"
+>
+    <span class="favorite-star" aria-hidden="true">★</span>
+</button>
+
+        <!-- CHAPTER -->
 
         <button
             id="levels"
             class="icon-btn"
             type="button"
-            aria-label="عرض الفصول"
+            aria-label="عرض الفصل الأول"
             aria-pressed="false"
-        ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M2 4.5C5.5 3 8.5 3.5 12 5v15c-3.5-1.5-6.5-2-10-0.5v-15z" />
-          <path d="M22 4.5C18.5 3 15.5 3.5 12 5v15c3.5-1.5 6.5-2 10-.5v-15z" />
-        </svg>
+        >
+
+         <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+>
+
+    <!-- الصفحة اليسرى -->
+    <path
+        d="M12 5.5
+           C9.5 4 6.5 3.5 2.5 5
+           V19
+           C6.5 17.5 9.5 18 12 19.5
+           V5.5Z"
+    />
+
+    <!-- الصفحة اليمنى -->
+    <path
+        d="M12 5.5
+           C14.5 4 17.5 3.5 21.5 5
+           V19
+           C17.5 17.5 14.5 18 12 19.5
+           V5.5Z"
+    />
+
+</svg>
         </button>
 
+
     </div>
+
 
 </header>
 
@@ -135,10 +181,12 @@
 <section
     id="searchPanel"
     class="search-panel hidden"
-    aria-label="البحث عن الدروس"
+    aria-label="البحث عن النصوص"
 >
 
+
     <div class="search-box">
+
 
         <span
             class="search-icon"
@@ -151,9 +199,9 @@
         <input
             type="text"
             id="searchInput"
-            placeholder="ابحث عن درس..."
+            placeholder="ابحث عن نص..."
             autocomplete="off"
-            aria-label="البحث عن الدروس"
+            aria-label="البحث عن النصوص"
         >
 
 
@@ -166,7 +214,9 @@
             ×
         </button>
 
+
     </div>
+
 
 </section>
 
@@ -180,7 +230,7 @@
 
 
 <!-- =====================================================
-     CHAPTER SELECTOR
+     CHAPTER
 ====================================================== -->
 
 <section class="level-section">
@@ -188,27 +238,52 @@
 
     <div class="section-header">
 
+
+    
+    <div class="section-header">
+
+
         <div>
 
-            <h2>
-                اختر الفصل
+
+            <h2 id="lessonsTitle">
+                نصوص الفصل الأول
             </h2>
 
-            <p>
-                اختر فصلًا لبدء التعلم
+
+            <p id="lessonsSubtitle">
+                نصوص إنجليزية مختارة بعناية لتلاميذ السنة الرابعة متوسط، ومفيدة لكل من يرغب في تطوير لغته الإنجليزية.
             </p>
 
+
         </div>
+
+
+        <span
+            id="lessonCount"
+            class="lesson-count"
+        >
+            0 نص
+        </span>
+
 
     </div>
 
 
+
+    </div>
+
+
+
+    <!-- الفصل الأول فقط -->
+
+
     <div
-        id="levelSelector"
-        class="level-selector"
-        role="tablist"
-        aria-label="فصول السنة الرابعة متوسط"
-    >
+    id="levelSelector"
+    class="level-selector"
+    role="tablist"
+    aria-label="فصول السنة الرابعة متوسط"
+>
 
 
         <!-- الفصل الأول -->
@@ -276,65 +351,48 @@
         </button>
 
 
-    </div>
+
+</div>
+
 
 </section>
 
 
 
 <!-- =====================================================
-     LESSONS
+     TEXTS
 ====================================================== -->
 
 <section
     class="lessons-section"
-    aria-label="الدروس"
+    aria-label="النصوص"
 >
 
 
-    <div class="section-header">
 
-
-        <div>
-
-            <h2 id="lessonsTitle">
-                دروس الفصل الأول
-            </h2>
-
-
-            <p id="lessonsSubtitle">
-                ابدأ بتعلم دروس الفصل الأول
-            </p>
-
-        </div>
-
-
-        <span
-            id="lessonCount"
-            class="lesson-count"
-        >
-            0 درس
-        </span>
-
-
-    </div>
-
-
+    <!-- TEXT LIST -->
 
     <div
         id="lessonsList"
         class="lessons-list"
     >
-        <!-- يتم إدراج الدروس بواسطة JavaScript -->
+
+        <!--
+            يتم إدراج النصوص بواسطة JavaScript
+        -->
+
     </div>
 
 
+
+    <!-- EMPTY STATE -->
 
     <div
         id="emptyState"
         class="empty-state hidden"
         role="status"
     >
+
 
         <div
             class="empty-icon"
@@ -345,18 +403,20 @@
 
 
         <h3>
-            لم يتم العثور على أي درس
+            لم يتم العثور على أي نص
         </h3>
 
 
         <p>
-            جرّب البحث مرة أخرى أو اختر فصلًا آخر.
+            جرّب البحث مرة أخرى.
         </p>
+
 
     </div>
 
 
 </section>
+
 
 </main>
 
@@ -384,20 +444,27 @@
     <article class="reader-container">
 
 
-        <!-- Reader Header -->
+        <!-- =================================================
+             READER HEADER
+        ================================================== -->
 
         <header class="reader-header">
 
+
+            <!-- CLOSE -->
 
             <button
                 id="closeReaderBtn"
                 class="icon-btn"
                 type="button"
-                aria-label="إغلاق الدرس"
+                aria-label="إغلاق النص"
             >
                 ←
             </button>
 
+
+
+            <!-- INFO -->
 
             <div class="reader-header-info">
 
@@ -414,21 +481,36 @@
                     id="readerLessonNumber"
                     class="reader-number"
                 >
-                    الدرس 1
+                    النص 1
                 </span>
 
 
             </div>
 
 
+
+            <!-- FAVORITE -->
+
             <button
-                id="readerFavoriteBtn"
-                class="icon-btn favorite-btn"
+    id="readerFavoriteBtn"
+    class="icon-btn favorite-btn"
+    type="button"
+    aria-label="إضافة النصوص إلى المفضلة"
+    aria-pressed="false"
+>
+    <span class="favorite-star" aria-hidden="true">★</span>
+</button>
+
+
+            <!-- AUDIO -->
+
+            <button
+                id="openWebBtn"
+                class="icon-btn"
                 type="button"
-                aria-label="إضافة الدرس إلى المفضلة"
-                aria-pressed="false"
+                aria-label="قراءة النص صوتيًا"
             >
-                ☆
+                🔊
             </button>
 
 
@@ -436,106 +518,45 @@
 
 
 
-        <!-- Reader Content -->
+        <!-- =================================================
+             READER CONTENT
+        ================================================== -->
 
         <div class="reader-content">
 
 
+
+            <!-- TITLE -->
+
             <div class="reader-title-section">
 
+
                 <h2 id="readerTitle">
-                    عنوان الدرس
+                    عنوان النص
                 </h2>
 
 
                 <p id="readerTitleAr">
-                    عنوان الدرس بالعربية
+                    عنوان النص بالعربية
                 </p>
+
 
             </div>
 
 
 
-            <!-- AUDIO -->
-
-<!-- AUDIO -->
-<div
-    class="audio-section"
-    aria-label="أدوات الصوت"
-><button
-    id="speakBtn"
-    class="speak-btn"
-    type="button"
->
-    <span
-        class="speak-icon"
-        aria-hidden="true"
-    >
-        🔊
-    </span>
-
-    <span>
-        القراءة
-    </span>
-</button>
-
-
-<button
-    id="stopSpeakBtn"
-    class="stop-speak-btn"
-    type="button"
->
-    إيقاف
-</button>
-
-</div><!-- سرعة القراءة -->
-<div
-    id="speechRateControl"
-    class="speech-controls" 
-><label for="speechRate">
-    سرعة القراءة
-</label>
-
-<select id="speechRate">
-
-    <option value="0.5">
-        0.5x بطيئة جدًا
-    </option>
-
-    <option value="0.75">
-        0.75x بطيئة
-    </option>
-
-    <option value="1" selected>
-        1x عادية
-    </option>
-
-    <option value="1.25">
-        1.25x سريعة
-    </option>
-
-    <option value="1.5">
-        1.5x سريعة جدًا
-    </option>
-
-    <option value="2">
-        2x سريعة جدًا
-    </option>
-
-</select>
-
-</div>
-
-
-            <!-- ENGLISH -->
+            <!-- =================================================
+                 ENGLISH TEXT
+            ================================================== -->
 
             <section
                 class="text-card english-card"
                 aria-label="النص الإنجليزي"
             >
 
+
                 <div class="card-label">
-                    🇬🇧 English
+                    English
                 </div>
 
 
@@ -546,19 +567,23 @@
                 >
                 </div>
 
+
             </section>
 
 
 
-            <!-- ARABIC -->
+            <!-- =================================================
+                 ARABIC TRANSLATION
+            ================================================== -->
 
             <section
                 class="text-card arabic-card"
                 aria-label="الترجمة العربية"
             >
 
+
                 <div class="card-label">
-                    🇩🇿 العربية
+                    العربية
                 </div>
 
 
@@ -569,33 +594,88 @@
                 >
                 </div>
 
+
             </section>
 
 
 
-            <!-- QUESTIONS -->
+            <!-- =================================================
+                 VOCABULARY
+            ================================================== -->
 
             <section
-                id="questionsSection"
-                class="questions-section"
+                id="vocabularySection"
+                class="vocabulary-section"
+                aria-label="الكلمات المهمة"
             >
 
 
                 <div class="section-header">
 
+
                     <div>
+
+
+                        <h3>
+                            📚 كلمات مهمة
+                        </h3>
+
+
+                        <p>
+                            كلمات وتعبيرات أساسية تساعدك على فهم النص وإثراء رصيدك اللغوي.
+                        </p>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div
+                    id="vocabularyContainer"
+                    class="vocabulary-container"
+                >
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =================================================
+                 QUESTIONS
+            ================================================== -->
+
+            <section
+                id="questionsSection"
+                class="questions-section"
+                aria-label="أسئلة الفهم"
+            >
+
+
+                <div class="section-header">
+
+
+                    <div>
+
 
                         <h3>
                             📝 أسئلة الفهم
                         </h3>
 
+
                         <p>
-                            اختبر مدى فهمك للنص
+                            اختبر فهمك للنص واستعد لأسئلة الفهم في شهادة التعليم المتوسط.
                         </p>
+
 
                     </div>
 
+
                 </div>
+
 
 
                 <div
@@ -604,8 +684,9 @@
                 >
                 </div>
 
-                
 
+
+                <!-- ANSWERS -->
 
                 <div
                     id="answersContainer"
@@ -617,59 +698,78 @@
             </section>
 
 
+
         </div>
 
 
 
-        <!-- FOOTER -->
+        <!-- =================================================
+             READER FOOTER
+        ================================================== -->
 
         <footer class="reader-footer">
 
+
+            <!-- PREVIOUS -->
 
             <button
                 id="prevLessonBtn"
                 class="navigation-btn"
                 type="button"
-                aria-label="الدرس السابق"
+                aria-label="النص السابق"
             >
+
 
                 <span>
                     →
                 </span>
 
+
                 <span>
                     السابق
                 </span>
 
+
             </button>
 
+
+
+            <!-- POSITION -->
 
             <div
                 class="reader-position"
                 aria-live="polite"
             >
 
+
                 <span id="currentPosition">
                     1 / 1
                 </span>
 
+
             </div>
 
+
+
+            <!-- NEXT -->
 
             <button
                 id="nextLessonBtn"
                 class="navigation-btn"
                 type="button"
-                aria-label="الدرس التالي"
+                aria-label="النص التالي"
             >
+
 
                 <span>
                     التالي
                 </span>
 
+
                 <span>
                     ←
                 </span>
+
 
             </button>
 
@@ -678,6 +778,7 @@
 
 
     </article>
+
 
 </div>
 
@@ -694,6 +795,10 @@
 >
 
 
+    <!-- =================================================
+         SIDE MENU HEADER
+    ================================================== -->
+
     <div class="side-menu-header">
 
 
@@ -707,13 +812,16 @@
 
         <div>
 
+
             <h2>
                 English
             </h2>
 
+
             <span>
                 السنة الرابعة متوسط
             </span>
+
 
         </div>
 
@@ -732,6 +840,10 @@
 
 
 
+    <!-- =================================================
+         NAVIGATION
+    ================================================== -->
+
     <nav class="side-navigation">
 
 
@@ -743,19 +855,22 @@
             type="button"
         >
 
+
             <span>
                 🌙
             </span>
+
 
             <span>
                 الوضع الليلي
             </span>
 
+
         </button>
 
 
 
-        <!-- LESSONS -->
+        <!-- TEXTS -->
 
         <button
             class="side-nav-item active"
@@ -764,13 +879,16 @@
             aria-current="page"
         >
 
+
             <span aria-hidden="true">
                 📚
             </span>
 
+
             <span>
-                الدروس
+                النصوص
             </span>
+
 
         </button>
 
@@ -784,13 +902,16 @@
             data-view="favorites"
         >
 
+
             <span aria-hidden="true">
-                ⭐
+              ★
             </span>
+
 
             <span>
                 المفضلة
             </span>
+
 
         </button>
 
@@ -804,13 +925,16 @@
             data-view="progress"
         >
 
+
             <span aria-hidden="true">
                 📊
             </span>
 
+
             <span>
                 تقدمي
             </span>
+
 
         </button>
 
@@ -819,10 +943,14 @@
 
 
 
-    <!-- ACTIONS -->
+    <!-- =================================================
+         ACTIONS
+    ================================================== -->
 
     <div class="side-menu-actions">
 
+
+        <!-- CONTINUE -->
 
         <button
             id="continueMenuBtn"
@@ -830,16 +958,22 @@
             type="button"
         >
 
+
             <span>
                 ▶️
             </span>
+
 
             <span>
                 متابعة التعلم
             </span>
 
+
         </button>
 
+
+
+        <!-- RESET -->
 
         <button
             id="resetProgressBtn"
@@ -847,13 +981,16 @@
             type="button"
         >
 
+
             <span>
                 🗑️
             </span>
 
+
             <span>
                 إعادة ضبط التقدم
             </span>
+
 
         </button>
 
@@ -862,18 +999,27 @@
 
 
 
-    <!-- FOOTER -->
+    <!-- =================================================
+         SIDE MENU FOOTER
+    ================================================== -->
 
     <div class="side-menu-footer">
 
 
         <p>
-            تعلم الإنجليزية للسنة الرابعة متوسط
+            نصوص إنجليزية مختارة بعناية
+            للسنة الرابعة متوسط
         </p>
 
 
-        <p class="copyright">
-            © 2026 English_BN — All rights reserved.
+        <p>
+            للتحضير لشهادة التعليم المتوسط
+            وتطوير مهارات اللغة الإنجليزية.
+        </p>
+
+
+        <p class="copyright" dir="ltr">
+            © B.N 2026 English_4MS — All rights reserved.
         </p>
 
 
@@ -932,7 +1078,8 @@
 
 
         <p>
-            سيتم حذف جميع الدروس المكتملة وإعادة ضبط تقدمك.
+            سيتم حذف جميع النصوص المكتملة
+            وإعادة ضبط تقدمك.
             لا يمكن التراجع عن هذا الإجراء.
         </p>
 
@@ -963,6 +1110,7 @@
 
     </div>
 
+
 </div>
 
 
@@ -979,14 +1127,18 @@
     aria-atomic="true"
 >
 
+
     <span id="toastMessage">
         تم الحفظ
     </span>
 
+
 </div>
 
 
+
 </div>
+
 
 
 <!-- =====================================================
